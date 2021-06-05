@@ -299,20 +299,20 @@ module TOLEFT(shift=0) g(TOLEFT(),left(shift))children();
 module TORIGHT(shift=0) g(TORIGHT(),right(shift))children();
 module TOFRONT(shift=0) g(TOFRONT(),front(shift))children();
 module TOREAR(shift=0) g(TOREAR(),behind(shift))children();
-module XCENTER(shift=0) g(align=XCENTER,right(shift))children();
-module YCENTER(shift=0) g(align=YCENTER,behind(shift))children();
-module ZCENTER(shift=0) g(align=ZCENTER,up(shift))children();
+module XCENTER(shift=0) g(XCENTER(),right(shift))children();
+module YCENTER(shift=0) g(YCENTER(),behind(shift))children();
+module ZCENTER(shift=0) g(ZCENTER(),up(shift))children();
 
 
-module toUp(shift=0) g(align=TOUP,up(shift))children();
-module toDown(shift=0) g(align=TODOWN,down(shift))children();
-module toLeft(shift=0) g(align=TOLEFT,left(shift))children();
-module toRight(shift=0) g(align=TORIGHT,right(shift))children();
-module toFront(shift=0) g(align=TOFRONT,front(shift))children();
-module toBehind(shift=0) g(align=TOBEHIND,behind(shift))children();
-module xCenter(shift=0) g(align=XCENTER,right(shift))children();
-module yCenter(shift=0) g(align=YCENTER,behind(shift))children();
-module zCenter(shift=0) g(align=ZCENTER,up(shift))children();
+module toUp(shift=0) g(TOUP(),up(shift))children();
+module toDown(shift=0) g(TODOWN(),down(shift))children();
+module toLeft(shift=0) g(TOLEFT(),left(shift))children();
+module toRight(shift=0) g(TORIGHT(),right(shift))children();
+module toFront(shift=0) g(TOFRONT(),front(shift))children();
+module toBehind(shift=0) g(TOBEHIND(),behind(shift))children();
+module xCenter(shift=0) g(XCENTER(),right(shift))children();
+module yCenter(shift=0) g(YCENTER(),behind(shift))children();
+module zCenter(shift=0) g(ZCENTER(),up(shift))children();
 
 
 module turnXY(angle=90) g(turnXY(angle))children();
