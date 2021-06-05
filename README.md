@@ -7,7 +7,7 @@ Compiles directly by Openscad.
 Just include constructive-compiled.scad
 in your file that is all.
 ```
-![screeen](constructive-demo.gif)
+![screeen](/constructive-demo.gif)
 
 still work in progress but very usable and imho essential
 see Examples pulley-demo.scad for how to use it
