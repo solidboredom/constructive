@@ -18,7 +18,7 @@ it takes a different approach to OpenScad Syntax: you rarely need difference(), 
 
 pieces(4)  X(every(35)) turnXY(vals(10,25,-15,40))  cube(10);
 
-It is all valid OpenScad, you do need any additional programs, just the OpenScad and the constructive-compiled.scad file.
+It is all valid OpenScad, you do not need any additional programs, just the OpenScad and the constructive-compiled.scad file.
 
 The Constuctive-Syntax tries to align more with mechanical construction of parts and less with mathematical concepts like arrays, vectors and functions. (but they are heavily used behind the scenes). So it aims to be more concise and fluent for mechanical parts than vanilla OpenScad. It allows you to make holes from Modules and really good deal more.
 For about 5 years now i have been working on it and using it a lot. Now I i hope you will find it just as useful, as i do. I am barely writing any vanilla OpenScad any more.
