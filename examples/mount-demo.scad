@@ -59,6 +59,10 @@ module mount()
                 ,solid()) //solid means that childred tube() and tubeFast()
                           //will produce solid rods without inner holes
 {
+  //most command scan be chained like: X(10) turnXY(30) Z(40) TOUP() cube(10);
+  //but also grouped under one g(....) : g(X(10),turnXY(30),Z(40),TOUP()) cube(40);
+  //the result is the same, but the g(...) Variant is FASTER in openscad, so it is the preferred one.
+
   g(Z(-4),TOUP()) //X(),Y(),Z() just move the object like
                   //translate([x,y,z])
                   //TOUP() makes the following tube() or box() stand on the
@@ -163,6 +167,7 @@ module mount()
 				  box(100,h=110,y=1.2);
   }
 }
+
 module animationMessage()
   g(Z(20),X(20),Y(-40),turnYZ(45))
   {
