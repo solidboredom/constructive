@@ -44,6 +44,3 @@ g(X(10),Y(15),turnXY(45),X(30))
 
         box(10);
 
-Hope that somebody takes time to give it a try or perhaps even adopts it.
-
-Peter
