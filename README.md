@@ -1,5 +1,5 @@
 
-constructive# is a library/framework for OpenScad
+CONSTRUCTIVE is a library/framework for OpenScad
 A dialect of OpenScad more suitable for complex models,
 with many new features. It has been in continous use by myself for few years now.
 
