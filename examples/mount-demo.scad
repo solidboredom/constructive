@@ -50,31 +50,31 @@ module mount()
   autoColor()
     //appyTo("somename") speifies default name of the part
     //which following add(), remove(), confine() or addRemove() will affect,
-    //unless specifically specified by their first argument, like in "add("mountEnds")""
+    //unless specifically specified by their first argument, like in add("mountEnds")
     applyTo("base",height(margin(8)) //height() sets default if height of tube() or box()
                                     //is not given as argument of their calls.
                                     //its value is also returned by the heightInfo() function if needed.
                 ,chamfer(-2,-2) //chamfers top, bottom, and/or sides of
                                 //each child by an approx. 2 mm cut
-                ,solid()) //solid means that childred tube() and tubeFast()
+                ,solid()) //solid means that children tube() and tubeFast()
                           //will produce solid rods without inner holes
 {
-  //most command scan be chained like: X(10) turnXY(30) Z(40) TOUP() cube(10);
+  //most commands scan be chained like: X(10) turnXY(30) Z(40) TOUP() cube(10);
   //but also grouped under one g(....) : g(X(10),turnXY(30),Z(40),TOUP()) cube(40);
-  //the result is the same, but the g(...) Variant is FASTER in openscad, so it is the preferred one.
+  //the result is the same, but the g(...) variant is FASTER in openscad, so it is the preferred one.
 
   g(Z(-4),TOUP()) //X(),Y(),Z() just move the object like
                   //translate([x,y,z])
                   //TOUP() makes the following tube() or box() stand on the
-                  //coordinates they are is drawn in,instead of beeing centered on them.
-                 //it works similar to the cube(10) vs cube([10,10,10],center=true)
+                  //coordinates point they are drawn in,instead of beeing centered on them.
+                 //it works similar to the cube([10,10,10]) vs cube([10,10,10],center=true)
                 //but makes it possible to align to any of the 6 cube's corners
                 //TOUP() is a shorthand for align(TOUP)
   //in Fact align(TOUP,TOREAR,TORIGHT)box(10); is equivalent to cube([10,10,10]);
   // and just the box(10); is equivalent to cube([10,10,10],center=true);
   {
   //add() adds the following objects to the part specified by the parent applyTo()
-  // this ones will add to the part called "base". bacause it is achild of an applyTo("base",....) above.
+  // this ones will add to the part called "base". bacause this specific add(...) is achild of an applyTo("base",....) above.
     add(stack()) //stack() stacks tube()s,box()es or both !!!!NOT SEPARATED by ";"!!!! upon each other (or sidwards if wished)
       tube(dOuter=75)
       tube(dOuter=52,h=10);
