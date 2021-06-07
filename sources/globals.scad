@@ -9,7 +9,7 @@
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 blue="blue"; brown="brown"; red="red"; green="green";

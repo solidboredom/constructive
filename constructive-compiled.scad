@@ -9,7 +9,7 @@
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 function toInt(str) =
@@ -191,7 +191,7 @@ function collect(val1,val2,val3,val4,val5
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 blue="blue"; brown="brown"; red="red"; green="green";
@@ -287,7 +287,7 @@ TOFRONT=-1* TOBEHIND;
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 function noUndefs(
@@ -370,7 +370,7 @@ function isOfTypeOrElse(type,obj,elseObj) =
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 function _prototype_PackedGeomerty() =
@@ -563,7 +563,7 @@ function applyTo(partName="main") = setType($type_currentPartStack
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 //include <globals.scad>
@@ -785,7 +785,7 @@ module applyTo(partName,step1=UNITY,step2=UNITY,step3=UNITY,step4=UNITY,step5=UN
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 ALL="ALL";
@@ -1104,7 +1104,7 @@ if(  currentPartIn(fromPart))
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 function margin(dim=0,margin=.8)= dim +removeExtra(margin);
@@ -1826,7 +1826,7 @@ else  children();
 
 //if you wish to improve the library or make changes to it,
 // it might be handier to use:
-//include <constructive-all.scad> instead. so you do have to recreate constructive-compiled.scad from the parts
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
 
