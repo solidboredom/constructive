@@ -281,7 +281,9 @@ difference()
 //them slightly in size and merge them into each other to
 //make absolutely sure the resulting body is connected to one volume
 module stack(direction=TOUP,spaceBy=0,mergeBy=0)
-g(stack(direction=TOUP,spaceBy=0,mergeBy=0,geom=$geomInfo))
+  g(stack(direction=direction,spaceBy=spaceBy
+                             ,mergeBy=mergeBy
+                            ,geom=$geomInfo))
 		children();
 
 

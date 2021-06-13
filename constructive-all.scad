@@ -12,11 +12,11 @@
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
-include <basicfuncs.scad>
-include <globals.scad>
-include <typeSystem.scad>
-include <geomInfo.scad>
-include <placements.scad>
-include <assemble.scad>
-include <constructive.scad>
-include <metricScrews.scad>
+include <sources/basicfuncs.scad>
+include <sources/globals.scad>
+include <sources/typeSystem.scad>
+include <sources/geomInfo.scad>
+include <sources/placements.scad>
+include <sources/assemble.scad>
+include <sources/constructive.scad>
+include <sources/metricScrews.scad>

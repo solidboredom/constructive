@@ -1,17 +1,16 @@
+# CONSTRUCTIVE is a library/framework for OpenScad
 
-CONSTRUCTIVE is a library/framework for OpenScad
-A dialect of OpenScad more suitable for complex models,
-with many new features. It has been in continous use by myself for few years now.
+(A dialect of OpenScad more suitable for complex models, with many new features. It has been in continous use by myself for few years now)
 
 Compiles directly by OpenScad. No other tools needed. Just include constructive-compiled.scad
 in your file that is all.
 
-![screeen](./mount.gif)
+![screeen](./img/mount.gif)
 
 still work in progress but very usable and imho essential
 see Examples mount-demo.scad for how to use it.
 another Example is pulley-demo.scad:
-![screeen](./pulley.gif)
+![screeen](./img/pulley.gif)
 The Constructive Library (about 1900 lines of Code) 
 
 it takes a different approach to OpenScad Syntax: you rarely need difference(), for(),intersection() or their one-to-one equivalents, In the library's own dialect a for() block might look like:
@@ -27,7 +26,10 @@ If somebody likes the Ideas, you are welcome to join work on it. It is released 
 
 There is barely any documentation yet. I will add it topic-wise, when any questions arise if there will be interest at all.
 
-For a basic introduction to its syntax and some possibilities, look at the explanations inside the example below, or ask me directly. Here is an example with approx 100 lines of actual code  (see also an animated .GIF in the Attachment):
+For a very basic introduction to its syntax and some possibilities
+see the [beginners tutorial](./tutorials/basic-tutorial.md)
+
+ for amore advanced use look at the explanations inside the example below, or ask me directly. Here is an example with approx 100 lines of actual code  (see also an animated .GIF in the Attachment):
 
 https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad
 
@@ -42,10 +44,9 @@ basic inheritance of construction parts (still needs improvement), or inverse tr
 g(X(10),Y(15),turnXY(45),X(30))
 
     g(backwards([X(10),Y(15),turnXY(45),X(30)])
-
+    
         box(10);
 
 Try it! i hope you will find it as useful as i do.
 
 Peter
-
