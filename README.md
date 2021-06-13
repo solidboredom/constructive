@@ -6,12 +6,12 @@ with many new features. It has been in continous use by myself for few years now
 Compiles directly by OpenScad. No other tools needed. Just include constructive-compiled.scad
 in your file that is all.
 
-![screeen](/mount.gif)
+![screeen](./mount.gif)
 
 still work in progress but very usable and imho essential
 see Examples mount-demo.scad for how to use it.
 another Example is pulley-demo.scad:
-![screeen](/pulley.gif)
+![screeen](./pulley.gif)
 The Constructive Library (about 1900 lines of Code) 
 
 it takes a different approach to OpenScad Syntax: you rarely need difference(), for(),intersection() or their one-to-one equivalents, In the library's own dialect a for() block might look like:
