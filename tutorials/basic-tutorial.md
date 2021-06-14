@@ -1,4 +1,4 @@
-# Basic introduction into openscad with the <u>Constructive</u> library for a new openscad user
+# Basic introduction to openscad with the <u>Constructive</u> library for a new openscad user
 
 --------------------
 
@@ -8,13 +8,10 @@ there is also another [example here](https://github.com/solidboredom/constructiv
 
 ----------------
 
-> NOTE: To run all code examples you find below in this tutorial will need only Openscad and 
-> a single file: constructive-compiled.scad 
-> the easiest way is to get  it isto download the [ZIP of the whole opencad Project](https://github.com/solidboredom/constructive/archive/refs/heads/main.zip)
-
-> and then extract the file constructive-compiled.scad file from the ZIParchive 
-
-> IMPORTANT: The folder where you put the constructive-compiled.scad MUST be the same as that of your own .scad files you are trying to run. Otherwise Openscad will not find the library 
+> NOTE: To run all code examples from this tutorial you will need only Openscad and 
+> a single file: constructive-compiled.scad put in the same Fodler as your own .scad files.
+> the easiest way to start is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
+> and then extract both files contained in it into same folder. Then you can open the tryExamples.scad from this folder with OpenScad, and then use this file to try the code Examples from the Tutorial, or anything else you like. Just Pessing F5 in Openscad to see the Results. 
 
 ---
 
@@ -35,7 +32,7 @@ same as cube([10,10,10],center=true) in vanilla Openscad syntax.
 
 ---
 
-> NOTE for people used to classic vanilla openscad
+> NOTE: for people used to classic vanilla openscad:
 > unless specified differently by TOUP(),TORIGHT(),align(...), etc.(which are explained below) all box(), tube() and other "constructive" bodies will be centered around center of coordinates, like when using ",center=true)" parameter in valilla Openscad.
 
 ---
@@ -84,14 +81,14 @@ include <constructive-compiled.scad>
 box(10,x=35,h=15);
 ```
 
-a cube with a side of 10 , but x=35 and h=!5, so that only the remaining unset y will get the value of 10: y=10
+a cube with a side of 10 , but x=35 and h=15, so that only the remaining unset y will get the value of 10: y=10
 same as cube([35,15,15],center=true) in vanilla Openscad syntax.
 
 ![screen](./tutorial-images/box4.png)
 ---
 
-> NOTE: all the examples here willl work in openscads preview (F5-Key), but if will later need them to be rendering correctly by (p)ressing the F6-key) or exporting them as .stl, you will need
-> to add one more simple line to your code. This line is called "a main() block". It is given and described at the very end of this tutorial 
+> NOTE: all the examples here willl work in openscads preview (F5-Key), but later you might need to render them correctly, when (pressing the F6-key) or exporting them as .stl, you will need
+> to add one more simple line to your code to acheive that. This line is called "a main() block". It is given and described at the very end of this tutorial 
 
 ---
 

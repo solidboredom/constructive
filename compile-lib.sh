@@ -13,3 +13,5 @@ cat \
 | grep -v '^include' > ./constructive-compiled.scad
 echo "constructive-compiled.scad written."
 cp constructive-compiled.scad examples/constructive-compiled.scad
+cp constructive-compiled.scad cad_kickstart/constructive-compiled.scad
+zip kickstart.zip cad_kickstart/*
