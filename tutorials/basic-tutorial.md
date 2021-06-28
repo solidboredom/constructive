@@ -2,27 +2,31 @@
 
 --------------------
 
-If you are an expierienced Openscad user, or need more informtion than listed here you can find examples of more advanced use than listed here 
+If you are an expierienced Openscad user, or need more informtion than listed here you can find examples of more advanced use than listed here
 please look that at the explanations inside the following [example](https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad)
 there is also another [example here](https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad)
 
 ----------------
 
-> NOTE: To run all code examples from this tutorial you will need only Openscad and 
+> NOTE: To run all code examples from this tutorial you will need only Openscad and
 > a single file: constructive-compiled.scad put in the same Fodler as your own .scad files.
 > the easiest way to start is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
-> and then extract both files contained in it into same folder. Then you can open the tryExamples.scad from this folder with OpenScad, and then use this file to try the code Examples from the Tutorial, or anything else you like. Just Pessing F5 in Openscad to see the Results. 
+> and then extract both files contained in it into same folder. Then you can open the tryExamples.scad from this folder with OpenScad, and then use this file to try the code Examples from the Tutorial, or anything else you like. Just Pessing F5 in Openscad to see the Results.
 
 ---
 
----
 
-## Basic constructive syntax: box()
+## Basic building blocks
+
+here are the basic buildng blocks box(),tube() and ball()
+they are very similar to OpenScad's native cube(),cylinder() and sphere() but have simpler, less mathematical argument syntax and additionally allow for powerful Constructive features introduced later .
+There are other more advanced blocks and features, such as bentStripXZ() or applying of chamfer(), which have no vanilla Openscad equivalent, the will be explained later
+#### Basic building block : box()
 
 ```.scad
 include <constructive-compiled.scad>
 
-box(side=10); 
+box(side=10);
 ```
 
 this will create a box, all box sides of side=10 mm and with its center around center of coordinates.
@@ -43,7 +47,7 @@ so
 ```.scad
 include <constructive-compiled.scad>
 
-box(10); 
+box(10);
 ```
 
 does exaclty the same as box(side=10);
@@ -53,7 +57,7 @@ does exaclty the same as box(side=10);
 ```.scad
 include <constructive-compiled.scad>
 
-box(10,h=15); 
+box(10,h=15);
 ```
 
 just like above, a box with all sides of 10, but a height of h=15.
@@ -88,79 +92,59 @@ same as cube([35,15,15],center=true) in vanilla Openscad syntax.
 ---
 
 > NOTE: all the examples here willl work in openscads preview (F5-Key), but later you might need to render them correctly, when (pressing the F6-key) or exporting them as .stl, you will need
-> to add one more simple line to your code to acheive that. This line is called "a main() block". It is given and described at the very end of this tutorial 
+> to add one more simple line to your code to acheive that. This line is called "a main() block". It is given and described at the very end of this tutorial
+
+---
+#### Basic building block: ball(diameter)
+creates a ball (a sphere() in vanilla OpenScad of given diameter ) it works just the same as sphere()
+but it also correctly reacts on align(), stack() and other Constructive concepts described below. out of the box. so it is preferred to use ball(d) instead of sphere()
+
+```.scad
+
+include <constructive-compiled.scad>
+ball(10);
+
+```
+![screen](./tutorial-images/ball.png)
 
 ---
 
-## Chamfer() : box()
-
-You can easily chamfer the sides of a box() , just use chamfer(down,up,side) to set by how mamy millimeters the bottom,top, or side edges of the cube need to be cut, use negatve numbers to indicace we want to remove material (and not to add a skirt)
+#### Basic building block: tube()
 
 ```.scad
 include <constructive-compiled.scad>
 
-chamfer(-1,-2,-3)box(10,x=35,h=15);
+tube(d=10,h=20,wall=2.5);  
 ```
 
-![screen](./tutorial-images/box5.png)
+creates a tube with outer Diameter of 10,a wall of 2.5 and height of 20mm
+![screen](./tutorial-images/tube1.png)  
 
 ---
-
-if you want smoother rounded vertical edges set fnCorner parameter to a higher value thanits default fnCorner=7
 
 ```.scad
 include <constructive-compiled.scad>
 
-chamfer(-1,-2,-3,fnCorner=60) box(10,x=35,h=15);
+tube(dOuter=45,dInner=25,h=20);  
 ```
 
-![screen](./tutorial-images/box6.png)
+just like above, but instead of specifing just d and wall thickness it is possible to specify dInner and dOuter.
 
----
-
-or make them straight with fncorner=2
+![screen](./tutorial-images/tube2.png)  ---
 
 ```.scad
 include <constructive-compiled.scad>
 
-chamfer(-1,-2,-3,fnCorner=2) box(10,x=35,h=15);
+tube(d=10,h=20,solid=true);
 ```
 
-or anything in between with value you choose
+creates a solid rod of d=10 in diameter and height of h=20, the solid=true argument is oneof the ways to make the rod solid,skipping the inner hole, which would turn it into a proper tube;
+in vanilla Openscad syntax this would be cylinder(d=10,h=20);
+![screen](./tutorial-images/tube3.png)  
 
-![screen](./tutorial-images/box7.png)
----
-
-or to chamfer only the sides the top,but notbottom, or otherwise  
-
-```.scad
-include <constructive-compiled.scad>
-
-chamfer(0,-2,-3) box(10,x=35,h=15);
-```
-
-or anything in between with value you choose
-
-![screen](./tutorial-images/box8.png)
-
----
-
-   skirt
- you can alsocreate a skirt  at the top or bottom using chamfer() but with a positive parameter 
- for coording side
-
-```.scad
-include <constructive-compiled.scad>
-
-chamfer(2,-2) box(10,x=35,h=15);
-```
-
-![screen](./tutorial-images/box9.png)
-
----
-
+----
 ## Moving and turning the Object around (also called translation and transfomation):
-
+---
 #### moving:
 
 the first box  with the side of (4 mm) is moved by 5mm to the right
@@ -231,80 +215,28 @@ turnXZ(-30) X(5) Y(10) turnXY(45) Z(15) box(10);
 
 this will move the box up by 10 mm, turn it by 45 degrees in the horizontal(XY) plane, and the move it 10 in y axis and 5 to the right and then turn thewhole thig around XZ axis by -30 degrees
 
-> NOTE: the sequence in which you apply turns and moves does matter. 
-> 
+> NOTE: the sequence in which you apply turns and moves does matter.
+>
 > Bacause the
-> 
-> turnXZ(30) X(20) box(10); 
-> 
+>
+> turnXZ(30) X(20) box(10);
+>
 > first movess the box by 20 mm and then rotates the whole arrangement around the center of coordinates, whereas the
->  X(20) turnXZ(30) box(10); 
-> 
-> first rotates the box around its own axis and then moves it to the right by 20 mm 
-> you can try it by yourself , just not forget the 
-> 
+>  X(20) turnXZ(30) box(10);
+>
+> first rotates the box around its own axis and then moves it to the right by 20 mm
+> you can try it by yourself , just not forget the
+>
 > include <constructive-compiled.scad>
-> 
+>
 > at the beginnning
 
----
-
-## Basic constructive syntax: tube()
-
-```.scad
-include <constructive-compiled.scad>
-
-tube(d=10,h=20,wall=2.5);  
-```
-
-creates a tube with outer Diameter of 10,a wall of 2.5 and height of 20mm 
-![screen](./tutorial-images/tube1.png)  
-
----
-
-```.scad
-include <constructive-compiled.scad>
-
-tube(dOuter=45,dInner=25,h=20);  
-```
-
-just like above, but instead of specifing just d and wall thickness it is possible to specify dInner and dOuter. 
-
-![screen](./tutorial-images/tube2.png)  ---
-
-```.scad
-include <constructive-compiled.scad>
-
-tube(d=10,h=20,solid=true); 
-```
-
-creates a solid rod of d=10 in diameter and height of h=20, the solid=true argument is oneof the ways to make the rod solid,skipping the inner hole, which would turn it into a proper tube;
-in vanilla Openscad syntax this would be cylinder(d=10,h=20);
-![screen](./tutorial-images/tube3.png)  
-
+---------------
 ----
+### Advanced body Positioning: aligning a body relative to its coordinates:
 
-#### Chamfer:  tube()
-
-you can chamfer the tubes up and bottom sides just like the we did to the box(), or even add skirts.
-
-```.scad
-include <constructive-compiled.scad>
-
-chamfer(4,-2) tube(d=10,h=20,wall=2.5);  
-```
-
-Chamfering with the chamfer() is only possible on the outer surface of the tube for now.
-To chamfer the hole inside a tube eith the current version of Constructive, it needs a little trick, we will return to the trick in another tutorial.   
-
-![screen](./tutorial-images/tube1c.png)
-
-----
-
-## aligning the body relative to its coordinates:
-
-instead of moving the body around by using X() Y() or Z() it is very often handier to just specify that it needs to be aligned so that, 
-its specific corner or side touches acorner or side of another body, and let the Constructive do the moving. (This is called "creating a constaint" in a traditional CAD) 
+instead of moving the body around by using X() Y() or Z() it is very often handier to just specify that it needs to be aligned so that,
+its specific corner or side touches acorner or side of another body, and let the Constructive do the moving. (This is called "creating a constaint" in a traditional CAD)
 here is an example:
 
 ```.scad
@@ -346,10 +278,10 @@ TODOWN() tube(d=20,h=20,wall=3);
 
 ![screen](./tutorial-images/align3.png)
 
-the TORIGHT() TOREAR() TOUP()  alignment is the default alignment for cube in vanilla Openscad, so that its cube([5,5,5]); will acheive the same as 
+the TORIGHT() TOREAR() TOUP()  alignment is the default alignment for cube in vanilla Openscad, so that its cube([5,5,5]); will acheive the same as
 TORIGHT() TOREAR() TOUP() box(5); in constructives dialect,.
 why use the longer vesion?
-Bacause it is possiible to assign alignement over one axis to a block of several bodies,and then specify alignment on another axis to a specific body, like here: 
+Bacause it is possiible to assign alignement over one axis to a block of several bodies,and then specify alignment on another axis to a specific body, like here:
 
 ```.scad
 include <constructive-compiled.scad>
@@ -367,11 +299,11 @@ TODOWN()TOFRONT()tube(d=20,h=10,wall=2);
 
 NOTE that  it is possible and in some cases needed to combinde several following align statements like TOUP() TORIGHT() into a  shorter single align(...) command:
 align(TORIGHT, TOREAR, TOUP) box(5); does the same  as the TORIGHT() TOREAR() TOUP() box(5); from above.
-in fact, TOUP() is only as hort for align(TOUP) and TORIGHT() for align (TORIGHT), etc 
+in fact, TOUP() is only as hort for align(TOUP) and TORIGHT() for align (TORIGHT), etc
 
 ---
 
-##Stacking Bodies on top on sides
+#### Stacking Bodies on top or to side
 
 When youhabe similar bodies stacked on top each other, or to a side, than in vanilla openscad you would have to move each body to the exact postion it needs to be, not so with Constructive.
 you just stack Bodies like that, just set the direction of Stacking:
@@ -395,8 +327,113 @@ TOUP() stack(TOUP)
 > note please donot forget the TOUP()alignment if youare using the stack(TOUP) this will align each individual body you ae stacking in the same direction with the Stacking, only the then the Bodies are Stacked properly on top of each other.
 
 ---
+----
+## advanced building blocks
+---
 
-##advanced stacking Example
+#### advanced building block: chamfer() :  tube()
+
+you can chamfer the tubes up and bottom sides just like the we did to the box(), or even add skirts.
+
+```.scad
+include <constructive-compiled.scad>
+
+chamfer(4,-2) tube(d=10,h=20,wall=2.5);  
+```
+
+Chamfering with the chamfer() is only possible on the outer surface of the tube for now.
+To chamfer the hole inside a tube eith the current version of Constructive, it needs a little trick, we will return to the trick in another tutorial.   
+
+![screen](./tutorial-images/tube1c.png)
+
+
+#### advanced building block: Chamfer() : box()
+
+You can easily chamfer the sides of a box() , just use chamfer(down,up,side) to set by how mamy millimeters the bottom,top, or side edges of the cube need to be cut, use negatve numbers to indicace we want to remove material (and not to add a skirt)
+
+```.scad
+include <constructive-compiled.scad>
+
+chamfer(-1,-2,-3)box(10,x=35,h=15);
+```
+
+![screen](./tutorial-images/box5.png)
+
+---
+
+if you want smoother rounded vertical edges set fnCorner parameter to a higher value thanits default fnCorner=7
+
+```.scad
+include <constructive-compiled.scad>
+
+chamfer(-1,-2,-3,fnCorner=60) box(10,x=35,h=15);
+```
+
+![screen](./tutorial-images/box6.png)
+
+---
+
+or make them straight with fncorner=2
+
+```.scad
+include <constructive-compiled.scad>
+
+chamfer(-1,-2,-3,fnCorner=2) box(10,x=35,h=15);
+```
+
+or anything in between with value you choose
+
+![screen](./tutorial-images/box7.png)
+---
+
+or to chamfer only the sides the top,but notbottom, or otherwise  
+
+```.scad
+include <constructive-compiled.scad>
+
+chamfer(0,-2,-3) box(10,x=35,h=15);
+```
+
+or anything in between with value you choose
+
+![screen](./tutorial-images/box8.png)
+
+---
+
+   skirt
+ you can alsocreate a skirt  at the top or bottom using chamfer() but with a positive parameter
+ for coording side
+
+```.scad
+include <constructive-compiled.scad>
+
+chamfer(2,-2) box(10,x=35,h=15);
+```
+
+![screen](./tutorial-images/box9.png)
+
+---
+
+#### advanced building block: bentStripXZ()
+
+```.scad
+include <constructive-compiled.scad>
+
+bentStripXZ(places=[ X(20),turnXZ(60),X(20),turnXZ(-45),X(10) ],
+             y=5, thick=10);
+```
+
+this will create a 3D strip by moving a cylindcal base element of height y=5 accouring to command-list  in its first argument places=[ ... ]
+
+![screen](./partII-images/bentStripXZ.png)  
+
+> NOTE: ONLY TURNS/MOVES in XZ plane are allowed inside places parameter
+> no alignment commands, like TOUP() or TOLEFT() are allowed in cuttent version.
+
+
+
+#### Advanced stacking Example
+
 here is a very similar Example, but we stack horizonally, and also apply chamfer() to remove 2 mm form the top andbottom sides edges, just to make them look better:
 
 ```.scad
@@ -414,13 +451,13 @@ chamfer(-2,-2)TORIGHT()stack(TORIGHT)
 
 > note please donot forget the TOUP()alignment if youare using the stack(TOUP) this will align each individual body you ae stacking in the same direction with the Stacking, only the then the Bodies are Stacked properly on top of each other.
 
----
+---------------------
 
-  Main() block:
+##  Main() block:
 
  to be able to render the the above examples with F6 or export their .stl
  you will need to wrap your code with the so called main () block statement.
- you just do it by 
+ you just do it by
  adding the assemble()add() line at the top of the code, just after the include line :
 
 ```

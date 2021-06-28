@@ -98,8 +98,11 @@ $totalPieces=1;
 
 function every(val=1,start=0,of=$totalPieces,totalPieces=$totalPieces)
 	=($valPtr*of/totalPieces)*val+start;
-function span(total=360,totalPieces=$totalPieces)
-	=($valPtr*total/totalPieces);
+function span(range=180,allButLast = false,totalPieces=$totalPieces)
+	= ($valPtr * ((totalPieces==1)? 0:(range / (totalPieces -(allButLast?0:1)) ) ));
+function spanAllButLast(range=360, totalPieces = $totalPieces)
+  = span(range=range,allButLast = true,totalPieces = totalPieces);
+
 function vRepeat(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10) =
 		let (pattern=collect(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10))
 			[for(i=[0:1:$totalPieces-1])
@@ -343,6 +346,25 @@ translate(multV(alignInfo(),[lx,ly,lz])/2)
 		doChamferBox(lx=lx,ly=ly,lz=lz)
  			cube([lx,ly,lz],center=true);
 
+stackingTranslation=calcStackingTranslation(lx,ly,lz);
+$centerLineStack=calcCenterLineStackBox(lx,ly,lz,stackingTranslation);
+translate(stackingTranslation)
+	children();
+}
+//similar to sphere() but
+//it reacts to toRight(),toFront(),etc
+// and allows stacking and chamfering
+module ball(d=heightInfo())
+{
+  assert(d!=undef,"TUBEFAST():d is undefined");
+  lx=d;
+  ly=d;
+  lz=d;
+
+translate(multV(alignInfo(),[lx,ly,lz])/2)
+	scale(addToV(multV(absV(stackingInfo()[1]/*stackOverlap*/)
+                        ,[1/lx,1/ly,1/lz]),1))
+    sphere(d=d);
 stackingTranslation=calcStackingTranslation(lx,ly,lz);
 $centerLineStack=calcCenterLineStackBox(lx,ly,lz,stackingTranslation);
 translate(stackingTranslation)
