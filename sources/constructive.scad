@@ -92,6 +92,11 @@ module ifLast(n=1,totalPieces=$totalPieces,valPtr=$valPtr)
   if(valPtr>=totalPieces-n)
 		children();
 }
+module selectPieces(decisionList=[true],valPtr=$valPtr)
+{
+  if(valPtr<len(decisionList) && decisionList[valPtr])
+		children();
+}
 
 
 $totalPieces=1;
@@ -248,7 +253,7 @@ module bentStrip(places)
     for(limit=[0:1:(len(allPlaces)-2)])
     {
       base =multAll([for(i=[0:1:limit])allPlaces[i]]);
-      hull()
+      hull() 
       two()
         multmatrix(vals(base,base*allPlaces[limit+1]))
         children();
