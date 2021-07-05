@@ -1348,7 +1348,7 @@ module bentStrip(places)
     for(limit=[0:1:(len(allPlaces)-2)])
     {
       base =multAll([for(i=[0:1:limit])allPlaces[i]]);
-      hull() 
+      hull()
       two()
         multmatrix(vals(base,base*allPlaces[limit+1]))
         children();
@@ -1635,14 +1635,14 @@ module tube(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=unde
 					          ,z=h+.1);
 
 	        if(arc>0 && arc<180)
-		        for(angle=[-180+90,arc+90])
-			         g(turnXY(angle)
-                  ,geom=chamfer(invert=innerChamfer))
-				              box(side=max(d,(d2==undef)?0:d2)
-					                   ,y=max(d,(d2==undef)?0:d2)
-					                  +2*2*max(zeroIfUndef(chamferInfo()[0][0])
-                            ,zeroIfUndef(chamferInfo()[1][0])
-                ),z=h+.1);
+		       for(angle=[-180+90,arc+90])
+			        g(turnXY(angle)
+                )chamfer(disable=true)//chamfer(invert=innerChamfer))
+				           box(side=max(d,(d2==undef)?0:d2)
+					          ,y=max(d,(d2==undef)?0:d2)
+					             +2*2*max(zeroIfUndef(chamferInfo()[0][0])
+                    ,zeroIfUndef(chamferInfo()[1][0])
+                ),h=h+.1);
 	      }
 	       up(stickOutBothEnds?0:holeStickOut/2)
 		        cylinder(solid?0:((h+.03+abs(holeStickOut)

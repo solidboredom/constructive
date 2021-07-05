@@ -4,11 +4,7 @@
 
 --------------------
 
-If you are an expierienced Openscad user, or need more informtion than listed here you can find examples of more advanced use than listed here
-please look that at the explanations inside the following [example](https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad)
-there is also another [example here](https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad)
-
-----------------
+if you are unsure about particular basic commands used in the codes snipplets below, please refer to the [basic tutorial](./basic-tutorial.md).
 
 > NOTE: To run all code examples from this tutorial you will need only Openscad and
 > a single file: constructive-compiled.scad put in the same Fodler as your own .scad files.
@@ -17,12 +13,19 @@ there is also another [example here](https://github.com/solidboredom/constructiv
 
 ---
 
+### body transformations
+
+#### reflectX(),reflectY(),reflectZ(),scale()
+
+TODO: still need to add descritpion text here
+---
+
+---
+
 ### Body duplication, "life without for()"
 
 to create several similar bodies or say a sequence of holes in one object,
 usually do not need to use for() and index variables, like in vanilla OpenScad. The command you use instead are less general, allowing to expressthe intent of what you trying to acheive in less code shorter and make it easier to understand:
-
-####reflectX(),reflectY(),ReflectZ(),scale()
 
 ### pieces(n) and every(distance)
 
@@ -87,6 +90,7 @@ two() reflectX(sides()) X(15) turnXZ(-30) box(10);
 
 so it produces the sameresult as above
 ![screen](./partII-images/sidesReflectX.png)
+
 ---
 
 #### span(range) and pieces(n)
@@ -258,142 +262,186 @@ pieces(15) X(span(200))
     color(vSpread(red,green,blue,cyan))
       ball(15);
 ```
+
 ![screen](./partII-images/vSpread1.png)  
 
 ----
 
 #### skipFirst(n=1)
+
 omits a command or block for the first n pieces,
 consider following example:
+
 ```.scad
 include <constructive-compiled.scad>
 
 pieces(15) X(span(200))
   {
-    TOUP()ball(15);
+    TOUP()ball(10);
 
     skipFirst(10)
       box(10,h=2);  
   }
 ```
+
 ![screen](./partII-images/skipFirst.png)  
 
 as you can see the box() command is only run starting with 11th piece
 ----
+
 ----
- 
+
 #### ifFirst(n=1)
+
 runs a command or block only for the first n pieces,
 consider following example:
+
 ```.scad
 include <constructive-compiled.scad>
 
 pieces(15) X(span(200))
   {
-    TOUP()ball(15);
+    TOUP()ball(10);
 
     ifFirst(5)
       box(10,h=2);  
   }
 ```
+
 ![screen](./partII-images/ifFirst.png)  
 
 ----
+
 #### ifLast(n=1)
+
 runs a command or block only for the last n pieces,
 consider following example:
+
 ```.scad
 include <constructive-compiled.scad>
 
 pieces(15) X(span(200))
   {
-    TOUP()ball(15);
+    TOUP()ball(10);
 
     ifLast(2)
       box(10,h=2);  
   }
 ```
+
 ![screen](./partII-images/ifLast.png)  
 
 ----
+
 #### selectPieces( decisionList =[...])
+
 selectPieces decides for each piece to run a block on not.
-it runs a block for piece number n if decisionList[n] is true:
+it runs a block for piece number n if the coording boolean value in the decisionList[n] is true:
+
 ```.scad
 include <constructive-compiled.scad>
 
 pieces(5) X(span(200))
   {
-    TOUP()ball(15);
+    TOUP()ball(10);
 
     selectPieces([true,false,false,true])
       box(10,h=2);  
   }
 ```
+
 ![screen](./partII-images/selectPieces.png)  
 
+----
+
+### runFor(conditionList=[true]) vs pieces(n)
+
+runFor(conditionList=[...])
+works like pieces(n) but lets you select particular piece numbers to create, where pieces(n) calls its children for every number [0...n-1], runFor(conditionList=[...]) takes a list of n bool values as a parameter.
+is a short for writing
+
+```.scad
+ pieces(n) selectPieces(conditionList=[...])
+```
+
+the n argument for the pieces(n) is autodetermined counting the elements in the conditionList
+
+```.scad
+include <constructive-compiled.scad>
+
+runFor([true,false,false,true,false,true,true])
+ X(span(100))
+  {
+    TOUP()ball(10);
+    box(10,h=2);  
+  }
+```
+
+![screen](./partII-images/runFor.png)
 ---
 
+#### \$valPtr
 
+\$valPtr is a Constractive system variable, which can tell you the number of the current piece in the pieces(n) body.
+using it allows you to implement your own logic on how to filter or change elements, in cases vals(),sides(),selectPieces() are to cumbersome to express the conditions intent.
 
-####\$valPtr
+> in fact, behind the scenes pieces(n) is translated into vanilla OpenScad along lines of for($varPtr=[0:1:n])
+
+```.scad
+include <constructive-compiled.scad>
+
+pieces(10)
+ X(span(100))
+{
+  if($valPtr==3)
+    ball(10);
+  else if($valPtr< 3 || $valPtr >4)
+    box(10,h=$valPtr*4+1);   
+}
+```
+
+![screen](./partII-images/valPtr.png)  
 
 ----
-###runFor(conditionList=[true]) vs pieces(n)
-is like pieces() but lets you select particular piece numbers the comman orblock for.
-it usually used in conjunction with $valPtr index varieable. where pieces(n) calls it children for every number [0...n-1] ,runFor takes a list of n bool values as a parameter.   
 
----        
+----
 
-removeExtra(extra=$removeExtra,what=0) = what+($removing? extra:0);
-function removeFor(body,extra=$removeExtra,what=0) = bodyIs(body)?(what+($removing? extra:0)):0;
-function adjustFor
+#### removeExtra(extra=$removeExtra,what=0)
+
+#### removeFor(body,extra=$removeExtra,what=0)
+
+#### bodyIs(body)?(what+($removing? extra:0)):0;
+
+#### adjustFor
 
 ####g() and height(),solid()
 simple constrains(touching/distance)
 
-assbling mechanical Parts from Several Moules
+###assemble()
 
-Part()
+###add()
 
-Assemble()
-
-add()
-
-remove()
-
+###remove()
 confineTo()
 
-$removing variable$
+> NOTE: Due to Openscadsown issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off uing the old goo intersection() instead, untill it is fixed
 
-autoColor()
-Opaq,clear,
+###$removing variable$
+
+##assembling mechanical Parts from several Modules
+part()
 
 #### Additional functions and modules:
 
-module arc(r,angle=90,deltaA=1,noCenter=false,wall=0)
+autoColor()
+Opaq(color),clear(color),
 
-module addOffset(rOuter=1,rInner=0)
-
+###misc. 2D
+arc(r,angle=90,deltaA=1,noCenter=false,wall=0)
+addOffset(rOuter=1,rInner=0)
 function arcPoints(r,angle=90,deltaA=1,noCenter=false)
 
-include <constructive-compiled.scad>
-
-assemble() add()
-{
-chamfer(-2,-2)TORIGHT()stack(TORIGHT)
-    box(20)
-    box(15)
-    box(10,h=30)
-    tube(d=10,wall=2,h=20)
-    tube(d=5,h=10,solid=true)
-    turnXY(45)box(5);
-
-TODOWN()TOREAR()tube(d=20,h=10,wall=2);
-}
-
 ```
-the result looks just the same like this and renders well with (F6-Key) as well as F5
-![screen](./tutorial-images/mainblock.png)
-that was it! now you can render and export STLs
+if you are an experienced Openscad user, or need more information than listed here,look at the more advanced use inside examples [example](https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad)
+there is also another [example here](https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad)
 ```

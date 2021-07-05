@@ -1,4 +1,4 @@
-//This is a part of:
+//This is a part of: 
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
 

@@ -1,10 +1,9 @@
-# Basic introduction to openscad with the <u>Constructive</u> library for a new openscad user
+# Basic introduction to openscad with the <u>Constructive</u> library for a new OpenScad user
 
 --------------------
 
-If you are an expierienced Openscad user, or need more informtion than listed here you can find examples of more advanced use than listed here
-please look that at the explanations inside the following [example](https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad)
-there is also another [example here](https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad)
+if you would like to start with the more advanced Constructive usage please refer to the
+[Part II](./tutorial-partII.md) tutorial or the commented code example files given at the end of it.
 
 ----------------
 
@@ -14,7 +13,6 @@ there is also another [example here](https://github.com/solidboredom/constructiv
 > and then extract both files contained in it into same folder. Then you can open the tryExamples.scad from this folder with OpenScad, and then use this file to try the code Examples from the Tutorial, or anything else you like. Just Pessing F5 in Openscad to see the Results.
 
 ---
-
 
 ## Basic building blocks
 
