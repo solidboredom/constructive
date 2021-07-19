@@ -1,3 +1,3 @@
 include <constructive-compiled.scad>
 
-box(side=10);  
+box(side=10);

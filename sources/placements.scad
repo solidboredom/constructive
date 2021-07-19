@@ -80,9 +80,11 @@ function matrix_minor(m,k,ri, rj) = let(len_r=len(ri)) len_r == 0 ? 1 :
 
 
 function reflect(x=-1,y=-1,z=-1,vector=[-1,-1,-1,-1])= scale(-x,-y,-z,-vector);
-function reflectX(x=-1)=let(y=-1,z=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
-function reflectY(y=-1)=let(x=-1,z=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
-function reflectZ(z=-1)=let(x=-1,y=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
+function reflectX(x=1)=let(y=-1,z=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
+function reflectY(y=1)=let(x=-1,z=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
+function reflectZ(z=1)=let(x=-1,y=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
+
+function cscale(x=1,y=1,z=1,vector=[1,1,1,1])=scale(x,y,z,vector);
 
 function scale(x=1,y=1,z=1,vector=[1,1,1,1])= [ [ x*vector[0], 0, 0,0],
                 [0,  y*vector[1], 0, 0],
@@ -139,9 +141,9 @@ module left(left=0,right=0,front=0,behind=0,up=0,down=0) g(XYZ(right-left,behind
 module behind(behind=0,right=0,left=0,front=0,up=0,down=0) g(XYZ(right-left,behind-front,up-down))children();
 module down(down=0,right=0,left=0,front=0,behind=0,up=0) g(XYZ(right-left,behind-front,up-down))children();
 module reflect(x=-1,y=-1,z=-1,vector=[-1,-1,-1,-1])g(reflect(x,y,z,vector))children();
-module reflectX(x=-1)g(reflectX(x))children();
-module reflectY(y=-1)g(reflectY(y))children();
-module reflectZ(z=-1)g(reflectZ(z))children();
+module reflectX(x=1)g(reflectX(x))children();
+module reflectY(y=1)g(reflectY(y))children();
+module reflectZ(z=1)g(reflectZ(z))children();
 module cscale(x=1,y=1,z=1,vector=[1,1,1,1])
 {
   assert(x[0]==undef,str("you are using cscale() from the constructive library, not the standard scale() module. it dos the same uses a bit different syntax,to pass it a vector, use it like: scale(vector=[2,3,5.1]),otherwise just use normal scale(x,y,z) values without square braces,but you called it like the standard scale: using scale(",x,",.......)"));

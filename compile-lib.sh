@@ -10,6 +10,7 @@ cat \
  sources/assemble.scad \
  sources/constructive.scad \
  sources/metricScrews.scad \
+ sources/nonMetricScrews.scad \
 | grep -v '^include' > ./constructive-compiled.scad
 echo "constructive-compiled.scad written."
 cp constructive-compiled.scad examples/constructive-compiled.scad

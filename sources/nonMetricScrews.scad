@@ -12,12 +12,13 @@
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
-include <sources/basicfuncs.scad>
-include <sources/globals.scad>
-include <sources/typeSystem.scad>
-include <sources/geomInfo.scad>
-include <sources/placements.scad>
-include <sources/assemble.scad>
-include <sources/constructive.scad>
-include <sources/metricScrews.scad>
-include <sources/nonMetricScrews.scad>
+module screw3mm(hCap=5,side=1,h=12.3)
+          g(align(RESET,TOUP)
+          ,Z(-hCap))
+          chamfer(1,-1)
+            tube(d=(5.7),h=hCap+.1,$fn=12)
+          g(Z(hCap+.1-.05),chamfer(.1,.3))
+      {
+        tube(d=margin(3.1,.2),h=4,$fn=12);
+        tube(d=margin(2,.2),h=h,$fn=12);
+      }

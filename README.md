@@ -61,4 +61,3 @@ g(X(10),Y(15),turnXY(45),X(30))
 Try it! i hope you will find it as useful as i do.
 
 Peter
-

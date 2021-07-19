@@ -634,9 +634,11 @@ function matrix_minor(m,k,ri, rj) = let(len_r=len(ri)) len_r == 0 ? 1 :
 
 
 function reflect(x=-1,y=-1,z=-1,vector=[-1,-1,-1,-1])= scale(-x,-y,-z,-vector);
-function reflectX(x=-1)=let(y=-1,z=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
-function reflectY(y=-1)=let(x=-1,z=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
-function reflectZ(z=-1)=let(x=-1,y=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
+function reflectX(x=1)=let(y=-1,z=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
+function reflectY(y=1)=let(x=-1,z=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
+function reflectZ(z=1)=let(x=-1,y=-1,vector=[-1,-1,-1,-1]) scale(-x,-y,-z,-vector);
+
+function cscale(x=1,y=1,z=1,vector=[1,1,1,1])=scale(x,y,z,vector);
 
 function scale(x=1,y=1,z=1,vector=[1,1,1,1])= [ [ x*vector[0], 0, 0,0],
                 [0,  y*vector[1], 0, 0],
@@ -693,9 +695,9 @@ module left(left=0,right=0,front=0,behind=0,up=0,down=0) g(XYZ(right-left,behind
 module behind(behind=0,right=0,left=0,front=0,up=0,down=0) g(XYZ(right-left,behind-front,up-down))children();
 module down(down=0,right=0,left=0,front=0,behind=0,up=0) g(XYZ(right-left,behind-front,up-down))children();
 module reflect(x=-1,y=-1,z=-1,vector=[-1,-1,-1,-1])g(reflect(x,y,z,vector))children();
-module reflectX(x=-1)g(reflectX(x))children();
-module reflectY(y=-1)g(reflectY(y))children();
-module reflectZ(z=-1)g(reflectZ(z))children();
+module reflectX(x=1)g(reflectX(x))children();
+module reflectY(y=1)g(reflectY(y))children();
+module reflectZ(z=1)g(reflectZ(z))children();
 module cscale(x=1,y=1,z=1,vector=[1,1,1,1])
 {
   assert(x[0]==undef,str("you are using cscale() from the constructive library, not the standard scale() module. it dos the same uses a bit different syntax,to pass it a vector, use it like: scale(vector=[2,3,5.1]),otherwise just use normal scale(x,y,z) values without square braces,but you called it like the standard scale: using scale(",x,",.......)"));
@@ -1502,6 +1504,40 @@ function tubeInfo(geom=$geomInfo) =
 			:undef;
 
 
+
+
+module ring2D(d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,solid=solidInfo())
+{
+  wall = zeroIfUndef(((dInner!=undef && dOuter!=undef)
+				  ?((dOuter-dInner)/2):wall));
+  d = ((dInner!=undef)
+		  ?dInner+wall*2:
+		      (dOuter!=undef
+			       ?dOuter:((d==undef)?d1:d)));
+
+  lx=d;
+  ly=d;
+  lz=0;
+  assert(d!=undef,"ring2D(): d is undefined");
+  summingUp= falseIfUndef($summingUp)
+			 && !falseIfUndef($partOfAddAfterRemoving);
+
+  translate(multV(alignInfo(),[lx,ly,lz])/2)
+  {
+    difference()
+	  {
+		   circle(d=d);
+		   if(!solid)circle(d=d-wall*2);
+	  }
+  }
+  stackingTranslation=calcStackingTranslation(lx,ly,lz);
+  $centerLineStack=calcCenterLineStackTube(lx,ly,lz,stackingTranslation);
+
+  translate(stackingTranslation)
+    children();
+  }
+
+
 //similar to cylinder() but with better human
 //readibly parameters
 //allows hollow tubes
@@ -1919,3 +1955,27 @@ clear(grey)
     }
     children();
 }
+//This is a part of:
+//CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
+//released under General Public License version 2.
+
+//you only need a single file: constructive-compiled.scad which
+//contains all the partial files you find. you can ignore everything else..
+//just include it in your code by:
+//include <constructive-compiled.scad>
+
+//if you wish to improve the library or make changes to it,
+// it might be handier to use:
+//include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
+//every time you make a change to a part of the library
+
+module screw3mm(hCap=5,side=1,h=12.3)
+          g(align(RESET,TOUP)
+          ,Z(-hCap))
+          chamfer(1,-1)
+            tube(d=(5.7),h=hCap+.1,$fn=12)
+          g(Z(hCap+.1-.05),chamfer(.1,.3))
+      {
+        tube(d=margin(3.1,.2),h=4,$fn=12);
+        tube(d=margin(2,.2),h=h,$fn=12);
+      }

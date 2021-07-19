@@ -13,13 +13,70 @@ if you are unsure about particular basic commands used in the codes snipplets be
 
 ---
 
+### body Colors
+#### opaq(color),clear(color)
+makes the Block of cirtain color and transparency
+you can use opaq(color) as a short to native openscads color(color), and clear(color) as a short for color(color,.4)
+a dozen of basic colors like red,green or silver
+are defined as constants (see the sources/globals.scad)
+so these color names can also be used without quotes
+example:
+
+opaq(red)
+
+
+clear(blue)
+
+other webcolors will still need the quotes
+Example
+opaq("lightblue")
+>NOTE: there is also an autocolor functionality for Parts introduced late in this tutorial aftter the parts() concept is introduced
+
 ### body transformations
 
-#### reflectX(),reflectY(),reflectZ(),scale()
+#### reflectX(),reflectY(),reflectZ()
 
-TODO: still need to add descritpion text here
+put reflectX(), reflectX() or reflectZ() in front of a block to reflect it along the precific axis.
+Example:
+
+```.scad
+include <constructive-compiled.scad>
+
+
+reflectZ() TOUP()
+{
+  box(10,h=3);
+  Z(3) ball(5);
+}
+//-----------
+//and this Part of the example is not using reflectZ()
+#TOUP()
+{
+  box(10,h=3);
+  Z(3) ball(5);
+}
+```
+![screen](./partII-images/reflectZ.png)
+
 ---
 
+### cscale(x,y,z)
+to resize a body or a block by a Factor
+put cscale() in front of it.
+
+```.scad
+include <constructive-compiled.scad>
+
+cscale(x=2)ball(20);
+Y(-30) cscale(y=2,z=.5) ball(20);
+```
+cscale(x=2) doubles the size along the x axis, cscale(y=2,z=.5) doubles the y and halves z
+
+![screen](./partII-images/cscale.png)
+
+
+>NOTE: when cscale(x,y,z) is used inside a g() group function
+      its synonymous scale(x,y,z) can also be used instead
 ---
 
 ### Body duplication, "life without for()"
@@ -406,6 +463,28 @@ pieces(10)
 
 ----
 
+### g() and height(),solid()
+simple constrains(touching/distance)
+More description for g() needed
+
+### assembling mechanical Parts from several Modules
+
+#### assemble()
+
+#### add()
+
+#### remove()
+#### part()
+#### applyTo()
+
+#### confineTo()
+
+> NOTE: Due to Openscadsown issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off uing the old goo intersection() instead, untill it is fixed
+
+#### $removing variable
+
+### Additional functions and modules:
+
 #### removeExtra(extra=$removeExtra,what=0)
 
 #### removeFor(body,extra=$removeExtra,what=0)
@@ -414,34 +493,14 @@ pieces(10)
 
 #### adjustFor
 
-####g() and height(),solid()
-simple constrains(touching/distance)
-
-###assemble()
-
-###add()
-
-###remove()
-confineTo()
-
-> NOTE: Due to Openscadsown issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off uing the old goo intersection() instead, untill it is fixed
-
-###$removing variable$
-
-##assembling mechanical Parts from several Modules
-part()
-
-#### Additional functions and modules:
-
-autoColor()
-Opaq(color),clear(color),
+### autoColor()
+looks up color of a part in the global color table
+and assigns it to a block
 
 ###misc. 2D
 arc(r,angle=90,deltaA=1,noCenter=false,wall=0)
 addOffset(rOuter=1,rInner=0)
 function arcPoints(r,angle=90,deltaA=1,noCenter=false)
 
-```
-if you are an experienced Openscad user, or need more information than listed here,look at the more advanced use inside examples [example](https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad)
+>if you are an experienced Openscad user, or need more information than listed here,look at the more advanced use inside examples [example](https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad)
 there is also another [example here](https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad)
-```

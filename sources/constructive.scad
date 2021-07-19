@@ -407,6 +407,40 @@ function tubeInfo(geom=$geomInfo) =
 			:undef;
 
 
+
+
+module ring2D(d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,solid=solidInfo())
+{
+  wall = zeroIfUndef(((dInner!=undef && dOuter!=undef)
+				  ?((dOuter-dInner)/2):wall));
+  d = ((dInner!=undef)
+		  ?dInner+wall*2:
+		      (dOuter!=undef
+			       ?dOuter:((d==undef)?d1:d)));
+
+  lx=d;
+  ly=d;
+  lz=0;
+  assert(d!=undef,"ring2D(): d is undefined");
+  summingUp= falseIfUndef($summingUp)
+			 && !falseIfUndef($partOfAddAfterRemoving);
+
+  translate(multV(alignInfo(),[lx,ly,lz])/2)
+  {
+    difference()
+	  {
+		   circle(d=d);
+		   if(!solid)circle(d=d-wall*2);
+	  }
+  }
+  stackingTranslation=calcStackingTranslation(lx,ly,lz);
+  $centerLineStack=calcCenterLineStackTube(lx,ly,lz,stackingTranslation);
+
+  translate(stackingTranslation)
+    children();
+  }
+
+
 //similar to cylinder() but with better human
 //readibly parameters
 //allows hollow tubes
