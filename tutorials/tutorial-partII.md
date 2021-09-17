@@ -15,7 +15,7 @@ if you are unsure about particular basic commands used in the codes snipplets be
 
 ### body Colors
 #### opaq(color),clear(color)
-makes the Block of cirtain color and transparency
+makes the Block of certain color and transparency
 you can use opaq(color) as a short to native openscads color(color), and clear(color) as a short for color(color,.4)
 a dozen of basic colors like red,green or silver
 are defined as constants (see the sources/globals.scad)
@@ -457,50 +457,7 @@ pieces(10)
 }
 ```
 
-![screen](./partII-images/valPtr.png)  
-
-----
-
-----
-
-### g() and height(),solid()
-simple constrains(touching/distance)
-More description for g() needed
-
-### assembling mechanical Parts from several Modules
-
-#### assemble()
-
-#### add()
-
-#### remove()
-#### part()
-#### applyTo()
-
-#### confineTo()
-
-> NOTE: Due to Openscadsown issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off uing the old goo intersection() instead, untill it is fixed
-
-#### $removing variable
-
-### Additional functions and modules:
-
-#### removeExtra(extra=$removeExtra,what=0)
-
-#### removeFor(body,extra=$removeExtra,what=0)
-
-#### bodyIs(body)?(what+($removing? extra:0)):0;
-
-#### adjustFor
-
-### autoColor()
-looks up color of a part in the global color table
-and assigns it to a block
-
-###misc. 2D
-arc(r,angle=90,deltaA=1,noCenter=false,wall=0)
-addOffset(rOuter=1,rInner=0)
-function arcPoints(r,angle=90,deltaA=1,noCenter=false)
-
->if you are an experienced Openscad user, or need more information than listed here,look at the more advanced use inside examples [example](https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad)
-there is also another [example here](https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad)
+![screen](./partII-images/valPtr.png)
+---  
+go on to for morre advanced concepts
+[Part III](./tutorial-partIII.md) tutorial

@@ -3,7 +3,9 @@
 --------------------
 
 if you would like to start with the more advanced Constructive usage please refer to the
-[Part II](./tutorial-partII.md) tutorial or the commented code example files given at the end of it.
+[Part II](./tutorial-partII.md) tutorial,
+[Part III](./tutorial-partIII.md) tutorial
+ code example files given at the end of it.
 
 ----------------
 

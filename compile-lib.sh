@@ -1,6 +1,6 @@
 #!/bin/bash
 #../cad_devlibsV6/v6assemble.scad \
-
+ 
 cat \
  sources/basicfuncs.scad \
  sources/globals.scad \

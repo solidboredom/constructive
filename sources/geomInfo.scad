@@ -1,3 +1,4 @@
+//GEOMINFO.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -53,7 +54,7 @@ function _prototype_PackedGeomerty() =
               ])
               ,definePrototype("type.Geometry.currentPartStack",/*index*/6,
               [
-              ["main"]
+              "main",undef,undef
               ])
              /*        ,definePrototype("type.Geometry.noHull",<n+1>,
               [
@@ -186,8 +187,13 @@ function align(a1=NOCHANGE,a2=NOCHANGE,a3=NOCHANGE) =
 			 ,(changes[2])?vals[2]:alignment[2]]]);
 
 
+function currentPartRemove() = currentPart(2);
+function currentPartAdd() = currentPart(1);
 
+function currentPart(forWhat=0) =
+    let(val = $geomInfo[getTypeIndex($type_currentPartStack)])
+    is_undef(val[forWhat])? val[0] : val[forWhat];
 
-function currentPart() = top($geomInfo[getTypeIndex($type_currentPartStack) ][0]);
-function applyTo(partName="main") = setType($type_currentPartStack
-                  ,[push($geomInfo[getTypeIndex($type_currentPartStack) ][0],partName)]);
+function applyTo(partName="main",add=undef,remove=undef)
+            = setType($type_currentPartStack
+                  ,[partName,add,remove]);

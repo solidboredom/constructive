@@ -1,3 +1,4 @@
+//BASICFUNCS.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -180,6 +181,7 @@ function collect(val1,val2,val3,val4,val5
 			,[val8]
 			,[val9]
 			,[val10])) if(a!=undef)a];
+//GLOBALS.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -276,6 +278,7 @@ TOFRONT=-1* TOBEHIND;
 
 /***internal global variables end************************/
 //need to aad more colors here
+// TYPEINFO.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -359,6 +362,7 @@ function isOfTypeOrElse(type,obj,elseObj) =
          : elseObj;
 
 //--------typesystem end--------------------------
+//GEOMINFO.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -414,7 +418,7 @@ function _prototype_PackedGeomerty() =
               ])
               ,definePrototype("type.Geometry.currentPartStack",/*index*/6,
               [
-              ["main"]
+              "main",undef,undef
               ])
              /*        ,definePrototype("type.Geometry.noHull",<n+1>,
               [
@@ -547,11 +551,17 @@ function align(a1=NOCHANGE,a2=NOCHANGE,a3=NOCHANGE) =
 			 ,(changes[2])?vals[2]:alignment[2]]]);
 
 
+function currentPartRemove() = currentPart(2);
+function currentPartAdd() = currentPart(1);
 
+function currentPart(forWhat=0) =
+    let(val = $geomInfo[getTypeIndex($type_currentPartStack)])
+    is_undef(val[forWhat])? val[0] : val[forWhat];
 
-function currentPart() = top($geomInfo[getTypeIndex($type_currentPartStack) ][0]);
-function applyTo(partName="main") = setType($type_currentPartStack
-                  ,[push($geomInfo[getTypeIndex($type_currentPartStack) ][0],partName)]);
+function applyTo(partName="main",add=undef,remove=undef)
+            = setType($type_currentPartStack
+                  ,[partName,add,remove]);
+//PLACEMENTS.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -776,6 +786,7 @@ module applyTo(partName,step1=UNITY,step2=UNITY,step3=UNITY,step4=UNITY,step5=UN
         ,step16,step17,step18,step19,step20
         ,name=name,geom=geom)
           children();
+//ASSEMBLE.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -855,11 +866,41 @@ function getGenialogyIndexForPart(child,derivedParts=$derivedParts)=
           enclosesOneOf(child,split(familySplit[i],"(")[0])?i:-1]))
           concat(foundAt,familySplit)];
 
-function currentPartIn(bodySet) = ( bodySet==ALL
-				|| (	  ($currentBody != undef)
+function currentPartIn(bodySet,standardBody
+                      ,concatStadardPrefix="+",exactNamePrefix=":",excludeItPrefix="!"
+                      ,currentBody=$currentBody) = ( bodySet==ALL
+				|| ( ($currentBody != undef)
 	  				   && (bodySet != undef)
-	  				   && enclosesOneOf(expandParentsStripArgs($currentBody),bodySet) ))
-					    ? (true) : (false);
+	  				   && (let(expandedParentsCurrentBody = expandParentsStripArgs(currentBody)
+                    , bodySetReplacedPlusSign = is_undef(standardBody)
+                                                  ?bodySet
+                                                  :join(split(bodySet,concatStadardPrefix)
+                                                        ,str(standardBody,","))
+                    , bodysInSet= split(bodySetReplacedPlusSign,",")
+                    ,  positiveBodySet= [for(b=bodysInSet)
+                                        let(sp=split(b,excludeItPrefix))
+                                        if(len(sp)==1)b]
+                    ,  negativeBodySet= [for(b=bodysInSet)
+                                        let(sp=split(b,excludeItPrefix))
+                                        if(len(sp)>1)
+                                          let(syntaxError= assert(len(sp)<3
+                                          ,str("Only one exclusionPrefix ''"
+                                            ,excludeItPrefix
+                                            ,"' allowed per body name."
+                                            ," seprate prefixed excluded "
+                                            ,"bodynames by commas ','"
+                                              )))
+                                            sp[1]]
+                    //  ,debu= echo(negativeBodySet)
+                  )(!encloses(negativeBodySet,currentBody) &&
+                      len([for(body=positiveBodySet)
+                        let(exactlyThis = reverse(split(body,exactNamePrefix))
+                            ,curBody = (len(exactlyThis)>1
+                                        ?currentBody
+                                        :expandedParentsCurrentBody))
+                        if(encloses(curBody, exactlyThis[0]))true
+                      ])>0))));
+//					    ? (true) : (false);
 function currentPartExactIn(bodySet) = ( bodySet==ALL
 				|| (	  ($currentBody != undef)
 	  				   && (bodySet != undef)
@@ -893,7 +934,7 @@ module assemble(bodys0=currentPart()
   ,bodys1="",bodys2="",bodys3="",bodys4="",bodys5="",bodys6="",bodys7="",bodys8="",bodys9=""
   ,bodys10="",bodys11="",bodys12="",bodys13="",bodys14="",bodys15="",bodys16="",bodys17="",bodys18="",bodys19=""
   ,bodys20="",bodys21="",bodys22="",bodys23="",bodys24="",bodys25="",bodys26="",bodys27="",bodys28="",bodys29=""
-   , $summingUp=true,$removing=false,$beforeRemoving=true,partColors=$partColors())
+   , $summingUp=true,$removing=false,$beforeRemoving=true,partColors=$partColors(),$derivedParts=[])
 {
   bodyListCommaSeparated=str(bodys0,",",bodys1,",",bodys2,",",bodys3,",",bodys4,",",bodys5,",",bodys6,",",bodys7,",",bodys8,",",bodys9,","
   ,bodys10,",",bodys11,",",bodys12,",",bodys13,",",bodys14,",",bodys15,",",bodys16,",",bodys17,",",bodys18,",",bodys19,","
@@ -933,7 +974,7 @@ module addHullStep(addOnly=true)
 module noHull(bodySet=currentPart())
 {
   if(!$hulling
-     || ($hulling && (bodySet!="" && !currentPartIn(bodySet))))children();
+     || ($hulling && (bodySet!="" && !currentPartIn(bodySet,currentPart()))))children();
 }
 
 module hullIf(case=false)
@@ -966,7 +1007,8 @@ p=[(isPlaceOrGeom(only)?only:UNITY),step1,step2,step3,step4,step5
 			 ,step10,step12,step13,step14,step15
 			 ,step16,step17,step18,step19,step20];
 
-onlyPart = ( only == undef || isPlaceOrGeom(only))?currentPart():only;
+onlyPart = ( only == undef || isPlaceOrGeom(only))
+        ?currentPart($removing?2:1):only;
 
 place=placesOnly(p);
 
@@ -987,14 +1029,14 @@ if( $currentBody == undef || onlyPart==ALL
     children();
   }
 
- if( currentPartIn (add))
+ if( currentPartIn (add,currentPartAdd()))
     addOnly()
      multmatrix($placement)
   {
     $placement=UNITY;
     children();
   }
-if(  currentPartIn(remove))
+if(  currentPartIn(remove,currentPartRemove()))
     removeOnly()
          multmatrix($placement)
     {
@@ -1039,15 +1081,13 @@ $placementStack=concat($placementStack, [[name,$placement]]);
 $placementStackTop=$placementStackTop+1;
 
 //echo("add.geomInfo:",$geomInfo);
- if( currentPartIn (toPart))
+ if( currentPartIn (toPart,currentPartAdd()))
     addOnly()     multmatrix($placement)
   {
-
-
     $placement=UNITY;
     children();
   }
-if(currentPartIn(remove))
+if(currentPartIn(remove,currentPartRemove()))
   removeOnly()     multmatrix($placement)
   {
 
@@ -1062,7 +1102,6 @@ module remove(from,step1=UNITY,step2=UNITY,step3=UNITY,step4=UNITY,step5=UNITY
         ,step16=UNITY,step17=UNITY,step18=UNITY,step19=UNITY,step20=UNITY
         ,name="",geom,add)
 {
-
 
 //////////////
 p=[(isPlaceOrGeom(from)?from:UNITY),step1,step2,step3,step4,step5
@@ -1081,20 +1120,21 @@ $placement=multAll(place);
 $placementStack=concat($placementStack, [[name,$placement]]);
 $placementStackTop=$placementStackTop+1;
 
-if( currentPartIn (add))
+if( currentPartIn (add,currentPartAdd()))
     addOnly()     multmatrix($placement)
   {
     $placement=UNITY;
     children();
   }
 
-if(  currentPartIn(fromPart))
+if(  currentPartIn(fromPart,currentPartRemove()))
     removeOnly()     multmatrix($placement)
   {
     $placement=UNITY;
     children();
   }
 }
+//CONSTRUCTIVE.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -1239,18 +1279,11 @@ function height(h) =	setType($type_geomInfoHeight,[h]);
 // i.e. chamfer(up=-1,sides=0) to disable chamfering of sides
 // chamfer (up=1) grows the side by the same amount instead of chamfering
 //allowing to get chamfered conaves (inner corners between objects)
-function chamfer(down,up,side,fnCorner=7,disable=false,invert=false)
+function chamfer(down,up,side,fnCorner=7,disable=false,prevInfo=chamferInfo())
 	=  	let(down=disable?0:down,up=disable?0:up)
           setType($type_geomInfoChamfer,
-		 (invert
-			?[for(i=[0,1])
-				if(chamferInfo()[i]!=undef)
-					[chamferInfo()[i][0],chamferInfo()[i==0?1:0][1]
-					,(side==undef)
-						?chamferInfo()[i==0?1:0][1]
-						:side]
-					,chamferInfo()[3]]
-			:[for(i=[-1,1])
+		 (
+			[for(i=[-1,1])
 					((i==-1 && down==undef)||(i==1 && up==undef))
            ?[999999,0,0,0]:([i,(i==-1)
 							?down
@@ -1265,6 +1298,20 @@ function chamfer(down,up,side,fnCorner=7,disable=false,invert=false)
             [-1, 20, 20, 7], [1, 20, 20, 7],false
             ]);*/
 
+
+function chamferInfoUpdate(invert=false,prevInfo=chamferInfo())
+	=   invert
+        ?setType($type_geomInfoChamfer,
+		 [for(i=[0,1])
+				if(prevInfo[i]!=undef)
+					[prevInfo[i][0],prevInfo[i==0?1:0][1]
+					,prevInfo[i==0?1:0][1]]
+					,prevInfo[3]]
+			):prevInfo;
+function chamferOff()=chamfer(disable=true);
+function chamferOn()=chamfer(disable=false);
+
+//-----------------------------------------------------------
 //changes alignment of the children objects
 //normally all box() or tube() objects are centered like
 //in cube(... , center=true)
@@ -1273,33 +1320,34 @@ function chamfer(down,up,side,fnCorner=7,disable=false,invert=false)
 // changed by move() or translate()
 //i.e. toRight() toUp() box(side = 10);
 //shothand align() function calls
-function toUp()= align(TOUP);
-function toLeft()= align(TOLEFT);
-function toRight()= align(TORIGHT);
-function toDown()= align(TODOWN);
-function toFront()= align(TOFRONT);
-function toRear()= align(TOREAR);
-function toBehind()= align(TOREAR);
+function toUp()= align(TOUP,align2,align3);
+function toLeft()= align(TOLEFT,align2,align3);
+function toRight()= align(TORIGHT,align2,align3);
+function toDown()= align(TODOWN,align2,align3);
+function toFront()= align(TOFRONT,align2,align3);
+function toRear()= align(TOREAR,align2,align3);
+function toBehind()= align(TOREAR,align2,align3);
 
-function TOUP() = align(TOUP);
-function TOLEFT() = align(TOLEFT);
-function TORIGHT() = align(TORIGHT);
-function TODOWN() = align(TODOWN);
-function TOFRONT() = align(TOFRONT);
-function TOREAR() = align(TOREAR);
-function TOBEHIND() = align(TOREAR);
+function TOUP(align2=NOCHANGE,align3=NOCHANGE) = align(TOUP,align2,align3);
+function TOLEFT(align2=NOCHANGE,align3=NOCHANGE) = align(TOLEFT,align2,align3);
+function TORIGHT(align2=NOCHANGE,align3=NOCHANGE) = align(TORIGHT,align2,align3);
+function TODOWN(align2=NOCHANGE,align3=NOCHANGE) = align(TODOWN,align2,align3);
+function TOFRONT(align2=NOCHANGE,align3=NOCHANGE) = align(TOFRONT,align2,align3);
+function TOREAR(align2=NOCHANGE,align3=NOCHANGE) = align(TOREAR,align2,align3);
+function TOBEHIND(align2=NOCHANGE,align3=NOCHANGE) = align(TOREAR,align2,align3);
 
-function XCENTER() = align(XCENTER);
-function xCenter() = align(XCENTER);
-function YCENTER() = align(YCENTER);
-function yCenter() = align(YCENTER);
-function ZCENTER() = align(ZCENTER);
-function zCenter() = align(ZCENTER);
+function RESETALIGN(align2=NOCHANGE,align3=NOCHANGE) = align(RESET,align2,align3);
+function XCENTER(align2=NOCHANGE,align3=NOCHANGE) = align(XCENTER,align2,align3);
+function xCenter(align2=NOCHANGE,align3=NOCHANGE) = align(XCENTER,align2,align3);
+function YCENTER(align2=NOCHANGE,align3=NOCHANGE) = align(YCENTER,align2,align3);
+function yCenter(align2=NOCHANGE,align3=NOCHANGE) = align(YCENTER,align2,align3);
+function ZCENTER(align2=NOCHANGE,align3=NOCHANGE) = align(ZCENTER,align2,align3);
+function zCenter(align2=NOCHANGE,align3=NOCHANGE) = align(ZCENTER,align2,align3);
 
-module chamfer(down,up,side,fnCorner=7,disable=false,invert=false)
+module chamfer(down,up,side,fnCorner=7,disable=false)
 {
 //i[0] = -1 at bottom ,1 at top; i[1] =chamferRadius)
-$geomInfo = set(chamfer(down,up,side,fnCorner,disable,invert));
+$geomInfo = set(chamfer(down,up,side,fnCorner,disable));
 children();
 }
 
@@ -1458,7 +1506,7 @@ translate(stackingTranslation)
 // and allows stacking and chamfering
 module ball(d=heightInfo())
 {
-  assert(d!=undef,"TUBEFAST():d is undefined");
+  assert(d!=undef,"BALL():d is undefined");
   lx=d;
   ly=d;
   lz=d;
@@ -1581,7 +1629,7 @@ module tubeFast(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=
 	        if(arc>=180)
 		        intersection_for(angle=[-180+90,arc+90])
 			         g(turnXY(angle)
-                ,geom = chamfer(invert=innerChamfer))
+                ,chamferInfoUpdate(invert=innerChamfer))
 				  box(side = max(d,(d2==undef)?0:d2)
 					     ,y=max(d,(d2==undef)?0:d2)
 					      +2*2*max(zeroIfUndef(chamferInfo()[0][0])
@@ -1591,29 +1639,29 @@ module tubeFast(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=
 	        if(arc>0 && arc<180)
 		        for(angle=[-180+90,arc+90])
 			         g(turnXY(angle)
-                  ,geom=chamfer(invert=innerChamfer))
+                  ,chamferInfoUpdate(invert=innerChamfer))
 				              box(side=max(d,(d2==undef)?0:d2)
 					                   ,y=max(d,(d2==undef)?0:d2)
 					                  +2*2*max(zeroIfUndef(chamferInfo()[0][0])
                             ,zeroIfUndef(chamferInfo()[1][0])
                 ),z=h+.1);
 	      }
-	       up(stickOutBothEnds?0:holeStickOut/2)
-		        cylinder(solid?0:((h+.03+abs(holeStickOut)
+	      if(!solid) up(stickOutBothEnds?0:holeStickOut/2)
+		        cylinder(((h+.03+abs(holeStickOut)
 			           +(stickOutBothEnds?abs(holeStickOut):0)))
 				         ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                  ,center=true);
 
-	      if(($inverted && $removing))
+	      if((!solid && $inverted && $removing))
 		        up(stickOutBothEnds?0:holeStickOut/2)
-			           cylinder(solid?0:((h+.03+abs(holeStickOut)
+			           cylinder(((h+.03+abs(holeStickOut)
                           +(stickOutBothEnds?abs(holeStickOut):0)))
 				                  ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                           ,center=true);
 	    }
-	    if(!$inverted && summingUp && $removing)
+	    if(!solid && !$inverted && summingUp && $removing)
 		    up(stickOutBothEnds?0:holeStickOut/2)
-			     cylinder(solid?0:((h+.03+abs(holeStickOut)
+			     cylinder(((h+.03+abs(holeStickOut)
                 +(stickOutBothEnds?abs(holeStickOut):0)))
 				            ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                       ,center=true);
@@ -1663,7 +1711,7 @@ module tube(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=unde
 	        if(arc>=180)
 		        intersection_for(angle=[-180+90,arc+90])
 			         g(turnXY(angle)
-                ,geom = chamfer(invert=innerChamfer))
+                ,chamferInfoUpdate(invert=innerChamfer))
 				  box(side = max(d,(d2==undef)?0:d2)
 					     ,y=max(d,(d2==undef)?0:d2)
 					      +2*2*max(zeroIfUndef(chamferInfo()[0][0])
@@ -1673,29 +1721,30 @@ module tube(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=unde
 	        if(arc>0 && arc<180)
 		       for(angle=[-180+90,arc+90])
 			        g(turnXY(angle)
-                )chamfer(disable=true)//chamfer(invert=innerChamfer))
+                //chamfer(disable=true)
+                  ,chamferInfoUpdate(invert=innerChamfer))
 				           box(side=max(d,(d2==undef)?0:d2)
 					          ,y=max(d,(d2==undef)?0:d2)
 					             +2*2*max(zeroIfUndef(chamferInfo()[0][0])
                     ,zeroIfUndef(chamferInfo()[1][0])
                 ),h=h+.1);
 	      }
-	       up(stickOutBothEnds?0:holeStickOut/2)
-		        cylinder(solid?0:((h+.03+abs(holeStickOut)
+	       if(!solid)up(stickOutBothEnds?0:holeStickOut/2)
+		        cylinder(((h+.03+abs(holeStickOut)
 			           +(stickOutBothEnds?abs(holeStickOut):0)))
 				         ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                  ,center=true);
 
-	      if(($inverted && $removing))
+	      if((!solid && $inverted && $removing))
 		        up(stickOutBothEnds?0:holeStickOut/2)
-			           cylinder(solid?0:((h+.03+abs(holeStickOut)
+			           cylinder(((h+.03+abs(holeStickOut)
                           +(stickOutBothEnds?abs(holeStickOut):0)))
 				                  ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                           ,center=true);
 	    }
-	    if(!$inverted && summingUp && $removing)
+	    if(!solid && !$inverted && summingUp && $removing)
 		    up(stickOutBothEnds?0:holeStickOut/2)
-			     cylinder(solid?0:((h+.03+abs(holeStickOut)
+			     cylinder(((h+.03+abs(holeStickOut)
                 +(stickOutBothEnds?abs(holeStickOut):0)))
 				            ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                       ,center=true);
@@ -1705,6 +1754,72 @@ module tube(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=unde
     translate(stackingTranslation)
 	    children();
   }
+
+//--------------------------------------------------
+module tubeSoftHole(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall
+                ,solid=solidInfo(),arc=0
+                ,innerChamfer=false)
+{
+  wall = zeroIfUndef(((dInner!=undef && dOuter!=undef)
+				  ?((dOuter-dInner)/2):wall));
+  d = ( dInner != undef )
+		      ? dInner + wall * 2
+          : ( dOuter != undef? dOuter : d);
+
+  lx=d;
+  ly=d;
+  assert(h!=undef,"TUBESOFTHOLE():h is undefined");
+  assert(d!=undef,"TUBESOFTHOLE():d is undefined");
+  lz=h;
+  summingUp= falseIfUndef($summingUp)
+			 && !falseIfUndef($partOfAddAfterRemoving);
+
+  translate(multV(alignInfo(),[lx,ly,lz])/2)
+	   scale(addToV(multV(absV(stackingInfo()[1]/*stackOverlap*/)
+                    ,[1/lx,1/ly,1/lz]),1))
+  {
+    difference()
+    {
+      translate([0,0,-h/2])
+        linear_extrude(height=h)
+          difference()
+	    {
+		    circle(d=d);
+        if(!solid)
+          circle(d=d-wall*2);
+      }
+
+      align(TORIGHT,ZCENTER)
+	    {
+	        if(arc>=180)
+		        intersection_for(angle=[-180+90,arc+90])
+			         g(turnXY(angle)
+                ,chamferInfoUpdate(invert=innerChamfer))
+				  box(side = d
+					  ,y = d + 2*2
+                 * max(zeroIfUndef(chamferInfo()[0][0])
+                    ,zeroIfUndef(chamferInfo()[1][0]))
+					          ,z=h+.1);
+
+	        if(arc>0 && arc<180)
+		        for(angle=[-180+90,arc+90])
+			         g(turnXY(angle)
+                  ,chamferInfoUpdate(invert=innerChamfer))
+				              box(side = d
+					               ,y=d + 2*2*max(zeroIfUndef(chamferInfo()[0][0])
+                            ,zeroIfUndef(chamferInfo()[1][0])
+                ),z=h+.1);
+	      }
+	    }
+    }
+  stackingTranslation=calcStackingTranslation(lx,ly,lz);
+  $centerLineStack=calcCenterLineStackTube(lx,ly,lz,stackingTranslation);
+
+  translate(stackingTranslation)
+    children();
+  }
+
+//-------------------------------------------------
 
 //USE THE chamfer() function instead!!
 //THIS FUNCTION IS NORMALLY NOT SUPPOSED TO BE CALLED BY THE USER
@@ -1880,6 +1995,7 @@ if(!disable)
 else  children();
 
 }
+//METRICSCREWS.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -1955,6 +2071,7 @@ clear(grey)
     }
     children();
 }
+//NONMETRICSCRES.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.

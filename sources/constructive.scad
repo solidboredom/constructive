@@ -1,3 +1,4 @@
+//CONSTRUCTIVE.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -142,18 +143,11 @@ function height(h) =	setType($type_geomInfoHeight,[h]);
 // i.e. chamfer(up=-1,sides=0) to disable chamfering of sides
 // chamfer (up=1) grows the side by the same amount instead of chamfering
 //allowing to get chamfered conaves (inner corners between objects)
-function chamfer(down,up,side,fnCorner=7,disable=false,invert=false)
+function chamfer(down,up,side,fnCorner=7,disable=false,prevInfo=chamferInfo())
 	=  	let(down=disable?0:down,up=disable?0:up)
           setType($type_geomInfoChamfer,
-		 (invert
-			?[for(i=[0,1])
-				if(chamferInfo()[i]!=undef)
-					[chamferInfo()[i][0],chamferInfo()[i==0?1:0][1]
-					,(side==undef)
-						?chamferInfo()[i==0?1:0][1]
-						:side]
-					,chamferInfo()[3]]
-			:[for(i=[-1,1])
+		 (
+			[for(i=[-1,1])
 					((i==-1 && down==undef)||(i==1 && up==undef))
            ?[999999,0,0,0]:([i,(i==-1)
 							?down
@@ -168,6 +162,20 @@ function chamfer(down,up,side,fnCorner=7,disable=false,invert=false)
             [-1, 20, 20, 7], [1, 20, 20, 7],false
             ]);*/
 
+
+function chamferInfoUpdate(invert=false,prevInfo=chamferInfo())
+	=   invert
+        ?setType($type_geomInfoChamfer,
+		 [for(i=[0,1])
+				if(prevInfo[i]!=undef)
+					[prevInfo[i][0],prevInfo[i==0?1:0][1]
+					,prevInfo[i==0?1:0][1]]
+					,prevInfo[3]]
+			):prevInfo;
+function chamferOff()=chamfer(disable=true);
+function chamferOn()=chamfer(disable=false);
+
+//-----------------------------------------------------------
 //changes alignment of the children objects
 //normally all box() or tube() objects are centered like
 //in cube(... , center=true)
@@ -176,33 +184,34 @@ function chamfer(down,up,side,fnCorner=7,disable=false,invert=false)
 // changed by move() or translate()
 //i.e. toRight() toUp() box(side = 10);
 //shothand align() function calls
-function toUp()= align(TOUP);
-function toLeft()= align(TOLEFT);
-function toRight()= align(TORIGHT);
-function toDown()= align(TODOWN);
-function toFront()= align(TOFRONT);
-function toRear()= align(TOREAR);
-function toBehind()= align(TOREAR);
+function toUp()= align(TOUP,align2,align3);
+function toLeft()= align(TOLEFT,align2,align3);
+function toRight()= align(TORIGHT,align2,align3);
+function toDown()= align(TODOWN,align2,align3);
+function toFront()= align(TOFRONT,align2,align3);
+function toRear()= align(TOREAR,align2,align3);
+function toBehind()= align(TOREAR,align2,align3);
 
-function TOUP() = align(TOUP);
-function TOLEFT() = align(TOLEFT);
-function TORIGHT() = align(TORIGHT);
-function TODOWN() = align(TODOWN);
-function TOFRONT() = align(TOFRONT);
-function TOREAR() = align(TOREAR);
-function TOBEHIND() = align(TOREAR);
+function TOUP(align2=NOCHANGE,align3=NOCHANGE) = align(TOUP,align2,align3);
+function TOLEFT(align2=NOCHANGE,align3=NOCHANGE) = align(TOLEFT,align2,align3);
+function TORIGHT(align2=NOCHANGE,align3=NOCHANGE) = align(TORIGHT,align2,align3);
+function TODOWN(align2=NOCHANGE,align3=NOCHANGE) = align(TODOWN,align2,align3);
+function TOFRONT(align2=NOCHANGE,align3=NOCHANGE) = align(TOFRONT,align2,align3);
+function TOREAR(align2=NOCHANGE,align3=NOCHANGE) = align(TOREAR,align2,align3);
+function TOBEHIND(align2=NOCHANGE,align3=NOCHANGE) = align(TOREAR,align2,align3);
 
-function XCENTER() = align(XCENTER);
-function xCenter() = align(XCENTER);
-function YCENTER() = align(YCENTER);
-function yCenter() = align(YCENTER);
-function ZCENTER() = align(ZCENTER);
-function zCenter() = align(ZCENTER);
+function RESETALIGN(align2=NOCHANGE,align3=NOCHANGE) = align(RESET,align2,align3);
+function XCENTER(align2=NOCHANGE,align3=NOCHANGE) = align(XCENTER,align2,align3);
+function xCenter(align2=NOCHANGE,align3=NOCHANGE) = align(XCENTER,align2,align3);
+function YCENTER(align2=NOCHANGE,align3=NOCHANGE) = align(YCENTER,align2,align3);
+function yCenter(align2=NOCHANGE,align3=NOCHANGE) = align(YCENTER,align2,align3);
+function ZCENTER(align2=NOCHANGE,align3=NOCHANGE) = align(ZCENTER,align2,align3);
+function zCenter(align2=NOCHANGE,align3=NOCHANGE) = align(ZCENTER,align2,align3);
 
-module chamfer(down,up,side,fnCorner=7,disable=false,invert=false)
+module chamfer(down,up,side,fnCorner=7,disable=false)
 {
 //i[0] = -1 at bottom ,1 at top; i[1] =chamferRadius)
-$geomInfo = set(chamfer(down,up,side,fnCorner,disable,invert));
+$geomInfo = set(chamfer(down,up,side,fnCorner,disable));
 children();
 }
 
@@ -361,7 +370,7 @@ translate(stackingTranslation)
 // and allows stacking and chamfering
 module ball(d=heightInfo())
 {
-  assert(d!=undef,"TUBEFAST():d is undefined");
+  assert(d!=undef,"BALL():d is undefined");
   lx=d;
   ly=d;
   lz=d;
@@ -484,7 +493,7 @@ module tubeFast(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=
 	        if(arc>=180)
 		        intersection_for(angle=[-180+90,arc+90])
 			         g(turnXY(angle)
-                ,geom = chamfer(invert=innerChamfer))
+                ,chamferInfoUpdate(invert=innerChamfer))
 				  box(side = max(d,(d2==undef)?0:d2)
 					     ,y=max(d,(d2==undef)?0:d2)
 					      +2*2*max(zeroIfUndef(chamferInfo()[0][0])
@@ -494,29 +503,29 @@ module tubeFast(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=
 	        if(arc>0 && arc<180)
 		        for(angle=[-180+90,arc+90])
 			         g(turnXY(angle)
-                  ,geom=chamfer(invert=innerChamfer))
+                  ,chamferInfoUpdate(invert=innerChamfer))
 				              box(side=max(d,(d2==undef)?0:d2)
 					                   ,y=max(d,(d2==undef)?0:d2)
 					                  +2*2*max(zeroIfUndef(chamferInfo()[0][0])
                             ,zeroIfUndef(chamferInfo()[1][0])
                 ),z=h+.1);
 	      }
-	       up(stickOutBothEnds?0:holeStickOut/2)
-		        cylinder(solid?0:((h+.03+abs(holeStickOut)
+	      if(!solid) up(stickOutBothEnds?0:holeStickOut/2)
+		        cylinder(((h+.03+abs(holeStickOut)
 			           +(stickOutBothEnds?abs(holeStickOut):0)))
 				         ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                  ,center=true);
 
-	      if(($inverted && $removing))
+	      if((!solid && $inverted && $removing))
 		        up(stickOutBothEnds?0:holeStickOut/2)
-			           cylinder(solid?0:((h+.03+abs(holeStickOut)
+			           cylinder(((h+.03+abs(holeStickOut)
                           +(stickOutBothEnds?abs(holeStickOut):0)))
 				                  ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                           ,center=true);
 	    }
-	    if(!$inverted && summingUp && $removing)
+	    if(!solid && !$inverted && summingUp && $removing)
 		    up(stickOutBothEnds?0:holeStickOut/2)
-			     cylinder(solid?0:((h+.03+abs(holeStickOut)
+			     cylinder(((h+.03+abs(holeStickOut)
                 +(stickOutBothEnds?abs(holeStickOut):0)))
 				            ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                       ,center=true);
@@ -566,7 +575,7 @@ module tube(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=unde
 	        if(arc>=180)
 		        intersection_for(angle=[-180+90,arc+90])
 			         g(turnXY(angle)
-                ,geom = chamfer(invert=innerChamfer))
+                ,chamferInfoUpdate(invert=innerChamfer))
 				  box(side = max(d,(d2==undef)?0:d2)
 					     ,y=max(d,(d2==undef)?0:d2)
 					      +2*2*max(zeroIfUndef(chamferInfo()[0][0])
@@ -576,29 +585,30 @@ module tube(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=unde
 	        if(arc>0 && arc<180)
 		       for(angle=[-180+90,arc+90])
 			        g(turnXY(angle)
-                )chamfer(disable=true)//chamfer(invert=innerChamfer))
+                //chamfer(disable=true)
+                  ,chamferInfoUpdate(invert=innerChamfer))
 				           box(side=max(d,(d2==undef)?0:d2)
 					          ,y=max(d,(d2==undef)?0:d2)
 					             +2*2*max(zeroIfUndef(chamferInfo()[0][0])
                     ,zeroIfUndef(chamferInfo()[1][0])
                 ),h=h+.1);
 	      }
-	       up(stickOutBothEnds?0:holeStickOut/2)
-		        cylinder(solid?0:((h+.03+abs(holeStickOut)
+	       if(!solid)up(stickOutBothEnds?0:holeStickOut/2)
+		        cylinder(((h+.03+abs(holeStickOut)
 			           +(stickOutBothEnds?abs(holeStickOut):0)))
 				         ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                  ,center=true);
 
-	      if(($inverted && $removing))
+	      if((!solid && $inverted && $removing))
 		        up(stickOutBothEnds?0:holeStickOut/2)
-			           cylinder(solid?0:((h+.03+abs(holeStickOut)
+			           cylinder(((h+.03+abs(holeStickOut)
                           +(stickOutBothEnds?abs(holeStickOut):0)))
 				                  ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                           ,center=true);
 	    }
-	    if(!$inverted && summingUp && $removing)
+	    if(!solid && !$inverted && summingUp && $removing)
 		    up(stickOutBothEnds?0:holeStickOut/2)
-			     cylinder(solid?0:((h+.03+abs(holeStickOut)
+			     cylinder(((h+.03+abs(holeStickOut)
                 +(stickOutBothEnds?abs(holeStickOut):0)))
 				            ,d1=d-wall*2,d2=((d2==undef)?d:d2)-wall*2
                       ,center=true);
@@ -608,6 +618,72 @@ module tube(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=unde
     translate(stackingTranslation)
 	    children();
   }
+
+//--------------------------------------------------
+module tubeSoftHole(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall
+                ,solid=solidInfo(),arc=0
+                ,innerChamfer=false)
+{
+  wall = zeroIfUndef(((dInner!=undef && dOuter!=undef)
+				  ?((dOuter-dInner)/2):wall));
+  d = ( dInner != undef )
+		      ? dInner + wall * 2
+          : ( dOuter != undef? dOuter : d);
+
+  lx=d;
+  ly=d;
+  assert(h!=undef,"TUBESOFTHOLE():h is undefined");
+  assert(d!=undef,"TUBESOFTHOLE():d is undefined");
+  lz=h;
+  summingUp= falseIfUndef($summingUp)
+			 && !falseIfUndef($partOfAddAfterRemoving);
+
+  translate(multV(alignInfo(),[lx,ly,lz])/2)
+	   scale(addToV(multV(absV(stackingInfo()[1]/*stackOverlap*/)
+                    ,[1/lx,1/ly,1/lz]),1))
+  {
+    difference()
+    {
+      translate([0,0,-h/2])
+        linear_extrude(height=h)
+          difference()
+	    {
+		    circle(d=d);
+        if(!solid)
+          circle(d=d-wall*2);
+      }
+
+      align(TORIGHT,ZCENTER)
+	    {
+	        if(arc>=180)
+		        intersection_for(angle=[-180+90,arc+90])
+			         g(turnXY(angle)
+                ,chamferInfoUpdate(invert=innerChamfer))
+				  box(side = d
+					  ,y = d + 2*2
+                 * max(zeroIfUndef(chamferInfo()[0][0])
+                    ,zeroIfUndef(chamferInfo()[1][0]))
+					          ,z=h+.1);
+
+	        if(arc>0 && arc<180)
+		        for(angle=[-180+90,arc+90])
+			         g(turnXY(angle)
+                  ,chamferInfoUpdate(invert=innerChamfer))
+				              box(side = d
+					               ,y=d + 2*2*max(zeroIfUndef(chamferInfo()[0][0])
+                            ,zeroIfUndef(chamferInfo()[1][0])
+                ),z=h+.1);
+	      }
+	    }
+    }
+  stackingTranslation=calcStackingTranslation(lx,ly,lz);
+  $centerLineStack=calcCenterLineStackTube(lx,ly,lz,stackingTranslation);
+
+  translate(stackingTranslation)
+    children();
+  }
+
+//-------------------------------------------------
 
 //USE THE chamfer() function instead!!
 //THIS FUNCTION IS NORMALLY NOT SUPPOSED TO BE CALLED BY THE USER

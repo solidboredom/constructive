@@ -1,3 +1,4 @@
+//ASSEMBLE.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
 //released under General Public License version 2.
@@ -77,11 +78,41 @@ function getGenialogyIndexForPart(child,derivedParts=$derivedParts)=
           enclosesOneOf(child,split(familySplit[i],"(")[0])?i:-1]))
           concat(foundAt,familySplit)];
 
-function currentPartIn(bodySet) = ( bodySet==ALL
-				|| (	  ($currentBody != undef)
+function currentPartIn(bodySet,standardBody
+                      ,concatStadardPrefix="+",exactNamePrefix=":",excludeItPrefix="!"
+                      ,currentBody=$currentBody) = ( bodySet==ALL
+				|| ( ($currentBody != undef)
 	  				   && (bodySet != undef)
-	  				   && enclosesOneOf(expandParentsStripArgs($currentBody),bodySet) ))
-					    ? (true) : (false);
+	  				   && (let(expandedParentsCurrentBody = expandParentsStripArgs(currentBody)
+                    , bodySetReplacedPlusSign = is_undef(standardBody)
+                                                  ?bodySet
+                                                  :join(split(bodySet,concatStadardPrefix)
+                                                        ,str(standardBody,","))
+                    , bodysInSet= split(bodySetReplacedPlusSign,",")
+                    ,  positiveBodySet= [for(b=bodysInSet)
+                                        let(sp=split(b,excludeItPrefix))
+                                        if(len(sp)==1)b]
+                    ,  negativeBodySet= [for(b=bodysInSet)
+                                        let(sp=split(b,excludeItPrefix))
+                                        if(len(sp)>1)
+                                          let(syntaxError= assert(len(sp)<3
+                                          ,str("Only one exclusionPrefix ''"
+                                            ,excludeItPrefix
+                                            ,"' allowed per body name."
+                                            ," seprate prefixed excluded "
+                                            ,"bodynames by commas ','"
+                                              )))
+                                            sp[1]]
+                    //  ,debu= echo(negativeBodySet)
+                  )(!encloses(negativeBodySet,currentBody) &&
+                      len([for(body=positiveBodySet)
+                        let(exactlyThis = reverse(split(body,exactNamePrefix))
+                            ,curBody = (len(exactlyThis)>1
+                                        ?currentBody
+                                        :expandedParentsCurrentBody))
+                        if(encloses(curBody, exactlyThis[0]))true
+                      ])>0))));
+//					    ? (true) : (false);
 function currentPartExactIn(bodySet) = ( bodySet==ALL
 				|| (	  ($currentBody != undef)
 	  				   && (bodySet != undef)
@@ -115,7 +146,7 @@ module assemble(bodys0=currentPart()
   ,bodys1="",bodys2="",bodys3="",bodys4="",bodys5="",bodys6="",bodys7="",bodys8="",bodys9=""
   ,bodys10="",bodys11="",bodys12="",bodys13="",bodys14="",bodys15="",bodys16="",bodys17="",bodys18="",bodys19=""
   ,bodys20="",bodys21="",bodys22="",bodys23="",bodys24="",bodys25="",bodys26="",bodys27="",bodys28="",bodys29=""
-   , $summingUp=true,$removing=false,$beforeRemoving=true,partColors=$partColors())
+   , $summingUp=true,$removing=false,$beforeRemoving=true,partColors=$partColors(),$derivedParts=[])
 {
   bodyListCommaSeparated=str(bodys0,",",bodys1,",",bodys2,",",bodys3,",",bodys4,",",bodys5,",",bodys6,",",bodys7,",",bodys8,",",bodys9,","
   ,bodys10,",",bodys11,",",bodys12,",",bodys13,",",bodys14,",",bodys15,",",bodys16,",",bodys17,",",bodys18,",",bodys19,","
@@ -155,7 +186,7 @@ module addHullStep(addOnly=true)
 module noHull(bodySet=currentPart())
 {
   if(!$hulling
-     || ($hulling && (bodySet!="" && !currentPartIn(bodySet))))children();
+     || ($hulling && (bodySet!="" && !currentPartIn(bodySet,currentPart()))))children();
 }
 
 module hullIf(case=false)
@@ -188,7 +219,8 @@ p=[(isPlaceOrGeom(only)?only:UNITY),step1,step2,step3,step4,step5
 			 ,step10,step12,step13,step14,step15
 			 ,step16,step17,step18,step19,step20];
 
-onlyPart = ( only == undef || isPlaceOrGeom(only))?currentPart():only;
+onlyPart = ( only == undef || isPlaceOrGeom(only))
+        ?currentPart($removing?2:1):only;
 
 place=placesOnly(p);
 
@@ -209,14 +241,14 @@ if( $currentBody == undef || onlyPart==ALL
     children();
   }
 
- if( currentPartIn (add))
+ if( currentPartIn (add,currentPartAdd()))
     addOnly()
      multmatrix($placement)
   {
     $placement=UNITY;
     children();
   }
-if(  currentPartIn(remove))
+if(  currentPartIn(remove,currentPartRemove()))
     removeOnly()
          multmatrix($placement)
     {
@@ -261,15 +293,13 @@ $placementStack=concat($placementStack, [[name,$placement]]);
 $placementStackTop=$placementStackTop+1;
 
 //echo("add.geomInfo:",$geomInfo);
- if( currentPartIn (toPart))
+ if( currentPartIn (toPart,currentPartAdd()))
     addOnly()     multmatrix($placement)
   {
-
-
     $placement=UNITY;
     children();
   }
-if(currentPartIn(remove))
+if(currentPartIn(remove,currentPartRemove()))
   removeOnly()     multmatrix($placement)
   {
 
@@ -284,7 +314,6 @@ module remove(from,step1=UNITY,step2=UNITY,step3=UNITY,step4=UNITY,step5=UNITY
         ,step16=UNITY,step17=UNITY,step18=UNITY,step19=UNITY,step20=UNITY
         ,name="",geom,add)
 {
-
 
 //////////////
 p=[(isPlaceOrGeom(from)?from:UNITY),step1,step2,step3,step4,step5
@@ -303,14 +332,14 @@ $placement=multAll(place);
 $placementStack=concat($placementStack, [[name,$placement]]);
 $placementStackTop=$placementStackTop+1;
 
-if( currentPartIn (add))
+if( currentPartIn (add,currentPartAdd()))
     addOnly()     multmatrix($placement)
   {
     $placement=UNITY;
     children();
   }
 
-if(  currentPartIn(fromPart))
+if(  currentPartIn(fromPart,currentPartRemove()))
     removeOnly()     multmatrix($placement)
   {
     $placement=UNITY;
