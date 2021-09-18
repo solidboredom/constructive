@@ -1320,13 +1320,13 @@ function chamferOn()=chamfer(disable=false);
 // changed by move() or translate()
 //i.e. toRight() toUp() box(side = 10);
 //shothand align() function calls
-function toUp()= align(TOUP,align2,align3);
-function toLeft()= align(TOLEFT,align2,align3);
-function toRight()= align(TORIGHT,align2,align3);
-function toDown()= align(TODOWN,align2,align3);
-function toFront()= align(TOFRONT,align2,align3);
-function toRear()= align(TOREAR,align2,align3);
-function toBehind()= align(TOREAR,align2,align3);
+function toUp(align2=NOCHANGE,align3=NOCHANGE)= align(TOUP,align2,align3);
+function toLeft(align2=NOCHANGE,align3=NOCHANGE)= align(TOLEFT,align2,align3);
+function toRight(align2=NOCHANGE,align3=NOCHANGE)= align(TORIGHT,align2,align3);
+function toDown(align2=NOCHANGE,align3=NOCHANGE)= align(TODOWN,align2,align3);
+function toFront(align2=NOCHANGE,align3=NOCHANGE)= align(TOFRONT,align2,align3);
+function toRear(align2=NOCHANGE,align3=NOCHANGE)= align(TOREAR,align2,align3);
+function toBehind(align2=NOCHANGE,align3=NOCHANGE)= align(TOREAR,align2,align3);
 
 function TOUP(align2=NOCHANGE,align3=NOCHANGE) = align(TOUP,align2,align3);
 function TOLEFT(align2=NOCHANGE,align3=NOCHANGE) = align(TOLEFT,align2,align3);
