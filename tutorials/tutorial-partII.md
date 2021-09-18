@@ -2,9 +2,26 @@
 
 ### PART II
 
+
+[Part II tutorial](./tutorials/tutorial-partII.md) shows some basic object modification like reflectX(), cScale() or colors and then goes on to explain how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
+
 --------------------
 
 if you are unsure about particular basic commands used in the codes snipplets below, please refer to the [basic tutorial](./basic-tutorial.md).
+
+[Part III tutorial](./tutorials/tutorial-partIII.md) shows more advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly 
+
+For a more advanced use also look at the explanations inside the example below
+
+https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad
+
+there is also another Example at:
+
+https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad
+
+-------------------
+The easiest way to try out the Library is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
+
 
 > NOTE: To run all code examples from this tutorial you will need only Openscad and
 > a single file: constructive-compiled.scad put in the same Fodler as your own .scad files.
@@ -459,5 +476,9 @@ pieces(10)
 
 ![screen](./partII-images/valPtr.png)
 ---  
-go on to for morre advanced concepts
-[Part III](./tutorial-partIII.md) tutorial
+For a **basic introduction**** (specially if you are new to Openscad )
+see the [beginners tutorial](./tutorials/basic-tutorial.md) it explains Constructive Syntax for main Building blocks, like tube(), box() or bentStrip() and their placement and alignment in space like stack() , align(), X(),Y(),Z() or turnXZ()
+
+[Part II tutorial](./tutorials/tutorial-partII.md) shows some basic object modification like reflectX(), cScale() or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
+
+[Part III tutorial](./tutorials/tutorial-partIII.md) shows more advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly

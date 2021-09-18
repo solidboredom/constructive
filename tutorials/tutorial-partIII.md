@@ -1,12 +1,31 @@
 # introduction to Openscad with the <u>Constructive</u> library for a new openscad user
 
 ### PART III
+NOTE: THIS IS STILL A BCONSTRUCTION SITE.
+LARGELY UNFINISHED WORK IN PROGRESS.
 
+[Part III tutorial](./tutorials/tutorial-partIII.md) shows advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly
 --------------------
 
+
 if you are unsure about particular basic commands used in the codes snipplets below, please refer to the [basic tutorial](./basic-tutorial.md).
-for some advanced concepts like cloning Objects see also
-[Part II](./tutorial-partIII.md) of this tutorial
+
+see also:
+
+[Part II tutorial](./tutorials/tutorial-partII.md) shows somee basic object modification like reflectX(), cScale() ,or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
+
+For a more advanced use also look at the explanations inside the example below
+
+https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad
+
+there is also another Example at:
+
+https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad
+
+
+
+-------------------
+The easiest way to try out the Library is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
 
 
 > NOTE: To run all code examples from this tutorial you will need only Openscad and
@@ -32,16 +51,14 @@ two()
 ```
 ![screen](./partII-images/g.png)  
 
-#### height(h) and
-#### solid(true/false) specify the default value for Constructive primitives like tube()  and box(). So inside of the g() block above, the h and solid arguments can be ommited when using box() or tube()  
+#### height(h) and solid(true/false) 
+specify the default value for Constructive primitives like tube()  and box(). So inside of the g() block above, the h and solid arguments can be ommited when using box() or tube()  
 
-----
-####simple constrains(touching/distance)
-------
 ------------------------------------------------
 ## assembling mechanical Parts from several Modules
 
-#### assemble() allows application of universal operations like adding and removing solids (i.e. boring holes or addings screws), only to a Part of the Model representing a specific mechanical (sub-)Part)
+#### assemble() 
+allows application of universal operations like adding and removing solids (i.e. boring holes or addings screws), only to a Part of the Model representing a specific mechanical (sub-)Part)
 
 To start with,surrounding your code by an  assemble() block without any parameters simply allows you to use add() and remove() instead of Openscads native difference()
 One of the advantages over difference() is that you can put positive parts(to be subtracted from) and negative parts(to be subtracted) in any order at any place of the block in any number, even inside movements and rotations. whereas with difference() you are forced to start with a single positive part (or you have to use a union() of several) and continue by negative parts which will be subtracted,forcing this order on you.
@@ -93,7 +110,7 @@ assemble()
 
 the same applies to remove(),applyTo() and confineTo() described later
 
------------------------------
+--------
 #### confineTo()
 
 > NOTE: Due to Openscads own issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off uing the old goo intersection() instead, untill it is fixed
@@ -106,10 +123,11 @@ asingle part can be cnstructed by several modules, and several modules can add o
 the parts which you want to display need to be span_8_rotated_boxesin the assemble("part1,greatpart,screw,orAlikePart") argument;
 if you decide to hide a Part just remove its name from the assemble(".....") string argment
 So here an example:
-TODO:
+TODO:.....
 
-
-#### applyTo() specifies name of the part which will be affected by the following add() and remove()
+--------
+#### applyTo() 
+specifies name of the part which will be affected by the following add() and remove()
 to create this part you also need to pass the part's name to assemble()
 example
 assemble()
@@ -143,13 +161,13 @@ ECHO: "aaa"
 ECHO: "ccc"
 ECHO: "ddd"
 ```
-#### part()
-
+-----
 ##parametrizing bodies for specific operations or parts
 it is possible to parametrize your code depending on whether it is beiing added or removed  or depending
 on the name of the body which is constructed.
 Adding and removing
-#### margin() allows create gaps between bodies
+#### margin() 
+allows create gaps between bodies
 ```.scad
 
 include <constructive-compiled.scad>
@@ -174,7 +192,8 @@ the default margin is set to .8 by default so ommiting the second parameter in m
 will produce a 16mm tube when added and 16.8 mm when removed, resulting in a gap of the half of 0.8 on each side of the tube.
 
 
-#### $removing variable allows you code to change parameters depending on weather it is being removed from another object:
+#### $removing variable 
+allows you code to change parameters depending on weather it is being removed from another object:
 
 ```.scad
 include <constructive-compiled.scad>
@@ -195,22 +214,27 @@ assemble("rod,plate")
 results in:
 ![screen](./partII-images/removing_var.png)
 
-#### bodyIs(body)?(what+($removing? extra:0)):0;
-### Additional functions and modules:
-
-#### removeFor(body,extra=$removeExtra,what=0)
-
-
-#### adjustFor
-
-### autoColor()
+####Topics to cover
+----
+*simple constrains(touching/distance)
+------
+*bodyIs(body)
+bodyIs(body)?(what+($removing? extra:0)):0;
+-----
+*removeFor(body,extra=$removeExtra,what=0)
+----
+*adjustFor
+-----
+*autoColor()
 looks up color of a part in the global color table
 and assigns it to a block
-
-###misc. 2D
+-----
+*misc. 2D
 arc(r,angle=90,deltaA=1,noCenter=false,wall=0)
 addOffset(rOuter=1,rInner=0)
 function arcPoints(r,angle=90,deltaA=1,noCenter=false)
+------
+For a **basic introduction** (specially if you are new to Openscad )
+see the [beginners tutorial](./tutorials/basic-tutorial.md) it explains Constructive Syntax for main Building blocks, like tube(), box() or bentStrip() and their placement and alignment in space like stack() , align(), X(),Y(),Z() or turnXZ()
 
->if you are an experienced Openscad user, or need more information than listed here,look at the more advanced use inside examples [example](https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad)
-there is also another [example here](https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad)
+[Part II tutorial](./tutorials/tutorial-partII.md) shows somee basic object modification like reflectX(), cScale() ,or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
