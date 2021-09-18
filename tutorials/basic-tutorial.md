@@ -1,11 +1,18 @@
 # Basic introduction to openscad with the <u>Constructive</u> library for a new OpenScad user
 
 --------------------
+A **basic introduction** (especially if you are new to Openscad )
+it explains Constructive Syntax for main Building blocks, like tube(), box() or bentStrip() and their placement and alignment in space like stack() , align(),  X(),Y(),Z() or turnXZ() 
 
-if you would like to start with the more advanced Constructive usage please refer to the
-[Part II](./tutorial-partII.md) tutorial,
-[Part III](./tutorial-partIII.md) tutorial
- code example files given at the end of it.
+--- 
+see also:
+[Part II tutorial](./tutorial-partII.md) shows somee basic object modification like reflectX(), cScale() ,or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
+
+[Part III tutorial](./tutorial-partIII.md) shows more advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly 
+
+----
+
+The easiest way to try out the Library is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
 
 ----------------
 
@@ -514,4 +521,26 @@ TODOWN()TOREAR()tube(d=20,h=10,wall=2);
 
 the result looks just the same like this and renders well with (F6-Key) as well as F5
 ![screen](./tutorial-images/mainblock.png)
+
+---
+
+see also:
+
+[Part II tutorial](./tutorial-partII.md) shows somee basic object modification like reflectX(), cScale() ,or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
+
+[Part III tutorial](./tutorial-partIII.md) shows more advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly 
+
+For a more advanced use also look at the explanations inside the example below
+
+https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad
+
+there is also another Example at:
+
+https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad
+
+
+The easiest way to try out the Library is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
+
+
+
 that was it! now you can render and export STLs
