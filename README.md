@@ -1,4 +1,5 @@
-# Constructive Library: Extends OpenScad Language for complex and complementary mechanical parts with less mathematical code. Offers a "Stamping"  approach to quickly create mechanical parts fitting and complementing one another. This is used as a replacement for Constraints known form other CAD systems
+# Constructive Library: 
+Extends OpenScad Language for complex and complementary mechanical parts with less mathematical code. Offers a "Stamping"  approach to quickly create mechanical parts fitting and complementing one another. This is used as a replacement for Constraints known form other CAD systems
 
 Easily create holes from modules and overcome many Openscad's limitiations for complex models using the library's own syntax. 
 
