@@ -26,6 +26,8 @@ see the [beginners tutorial](./tutorials/basic-tutorial.md) it explains Construc
 
 [Part III tutorial](./tutorials/tutorial-partIII.md) shows more advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly 
 
+__if you have questions you can ask me on the Openscad mailing list: https://lists.openscad.org/list/discuss.lists.openscad.org . Just add: constructive-lib to your subject to make sure i will see it__
+
 For a more advanced use also look at the explanations inside the example below
 
 https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad
