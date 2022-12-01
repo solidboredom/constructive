@@ -1,5 +1,5 @@
-# Constructive Library: Ceate complex and simple models in OpenScad with expressive and less mathematical code
-
+# Constructive Library: 
+Extends OpenScad Language for complex and complementary mechanical parts with less mathematical code. Offers a "Stamping"  approach to quickly create mechanical parts fitting and complementing one another. This is used as a replacement for Constraints known form other CAD systems
 Easily create holes from modules and overcome many Openscad's limitiations for complex models using the library's own syntax. 
 
 *Compiles directly by OpenScad*. No other tools needed. Just include the:
@@ -24,6 +24,10 @@ see the [beginners tutorial](./tutorials/basic-tutorial.md) it explains Construc
 [Part II tutorial](./tutorials/tutorial-partII.md) shows somee basic object modification like reflectX(), cScale() ,or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
 
 [Part III tutorial](./tutorials/tutorial-partIII.md) shows more advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly 
+
+
+__if you have questions you can ask me on the Openscad mailing list: https://lists.openscad.org/list/discuss.lists.openscad.org . Just add: constructive-lib to your subject to make sure i will see it__
+
 
 For a more advanced use also look at the explanations inside the example below
 
