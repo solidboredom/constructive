@@ -13,7 +13,7 @@
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
-ALL="ALL";
+ALL="ALL"; 
 
 function isAddingFirst()= ($summingUp
 							&& !$removing   );
@@ -173,9 +173,9 @@ echo("Assembling: ",splitBodies(expandParents(bodyListCommaSeparated)));
  }
 }
 
-module addHullStep(addOnly=true)
+module addHullStep(onlyFor=currentPart(),addOnly=true)
 {
-  if(!(addOnly && $removing)) hull()
+  if(!(addOnly && $removing) && partIs(onlyFor)) hull()
     {
        $hulling=true;
       children();

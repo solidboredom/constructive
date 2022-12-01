@@ -176,13 +176,15 @@ function calcCenterLineStackTube(lx,ly,lz,stackingTranslation,centerLineStack=$c
 
 function gAll(listOfSteps=[UNITY])= multAll(listOfSteps);
 
-function stepBack(until,i=$placementStackTop)=  $placementStack[i][1]
+function windBack(until,i=$placementStackTop)=  $placementStack[i][1]
   * ((i==1 || $placementStack[i][0]==until|| $placementStack[i-1][0]==until)
-   ?  UNITY : stepBack(until,i-1));
+   ?  UNITY : windBack(until,i-1));
 
 function backwards(steps1=[UNITY],steps2=[UNITY],steps3=[UNITY],steps4=[UNITY])
          = [matrix_invert(multAll(concat(steps1,steps2,steps3,steps4)))];
 
+function	stepBack(transformation=UNITY)=
+						matrix_invert(transformation);
 function geomsOnly(p,geom=undef) =
         let(geomList=[for(e=p)if(isOfGeomType(e))e])
           (!geom&&len(geomList)>0)?setFromList(geomList):set(geom);

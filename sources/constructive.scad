@@ -13,11 +13,11 @@
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
-function margin(dim=0,margin=.8)= dim +removeExtra(margin);
-function pad(dim=0,padding=.8) = dim -padding + removeExtra(padding);
+function margin(dim=0,margin=$margin)= dim +removeExtra(margin);
+function pad(dim=0,padding=$padding) = dim -padding + removeExtra(padding);
 
 
-
+ 
 //shorthand predicates to set color or transparecy
 //allows for syntactic sugar to set opaq or transparent object colors
 //like: clear(green) box(side=15);
@@ -109,9 +109,9 @@ function span(range=180,allButLast = false,totalPieces=$totalPieces)
 function spanAllButLast(range=360, totalPieces = $totalPieces)
   = span(range=range,allButLast = true,totalPieces = totalPieces);
 
-function vRepeat(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10) =
+function vRepeat(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10,shift=0) =
 		let (pattern=collect(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10))
-			[for(i=[0:1:$totalPieces-1])
+			[for(i=[shift:1:$totalPieces-1+shift])
 				pattern[i%len(pattern)]][$valPtr];
 function vSpread(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10) =
 		 let(pattern=collect(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10))
@@ -251,6 +251,44 @@ module bentStripXZ(places=[X(10)],y=$y,thick=3)
         circle(d=thick);
     }
 }
+
+
+module bentStripXZCamel(places=[X(10)],heights=["ERROR:need an array of heigths"],thick=3)
+{
+  allPlaces=concat([turnYZ()],placesOnly(places));
+
+  g(turnYZ(-90))
+    for(limit=[0:1:(len(allPlaces)-2)])
+    {
+      base =multAll([for(i=[0:1:limit])allPlaces[i]]);
+    hull()
+      two()
+        multmatrix(
+          vals(base,base*allPlaces[limit+1])
+                    * turnYZ(-90)*reflectZ())
+        linear_extrude(height=heights[limit+$valPtr])
+            circle(d=thick);
+    }
+}
+
+
+
+module bentStrip3D(places=[X(10)],y=$y,thick=3)
+{
+  allPlaces=placesOnly(places);
+
+  g(Z(-y/2))
+    for(limit=[0:1:(len(allPlaces)-2)])
+    {
+      base =multAll([for(i=[0:1:limit])allPlaces[i]]);
+      hull()
+      two()
+        multmatrix(
+          vals(base,base*allPlaces[limit+1]))
+      linear_extrude(y)  circle(d=thick);
+    }
+}
+
 //makes a 2D strip of abaselement and a list of transormations
 //Example:
 //bentStrip([X(30),turnXY(20),Y(40),X(80)])circle(5);

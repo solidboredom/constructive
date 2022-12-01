@@ -13,7 +13,7 @@
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
-function toInt(str) =
+function toInt(str) = 
       str=="-"?undef
       :str[0]=="-"? -1*toInt([for(i=[1:1:len(str)-1])str[i]])
     :let(d = [for (s = str) ord(s) - 48], l = len(d))

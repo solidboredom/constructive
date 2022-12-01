@@ -14,6 +14,45 @@
 //every time you make a change to a part of the library
 
 
+module cableClampSm(hMargin=margin(0),marginUp=0,xyMargin=margin(0,1),x=4,y=5.4,h=10.6) 
+	cableClamp(hMargin,marginUp,xyMargin,x,y,h)children();
+
+module cableClamp6m(hMargin=margin(0),marginUp=0,xyMargin=margin(0,1),x=4.3,y=5.9,h=10.4) 
+	cableClamp(hMargin,marginUp,xyMargin,x,y,h)children();
+	
+module clampScrews(hMargin=margin(0),screws=2)
+	pieces(screws)g(Z(-sides($screwDist/2-3/2)),turnXZ(-90),TOUP())
+	{
+			tubeFast(d=margin(2.2),h=5,solid=true,$fn=15);
+		Z(5-.01)tubeFast(d=margin(4),h=3+hMargin,solid=true,$fn=15);
+	}
+module cableClamp(hMargin=margin(0),marginUp=0,xyMargin=margin(0),x=4.3,y=5.7,h=10.3)
+
+{
+	Z((-h-hMargin)/2)linear_extrude(hMargin+h+marginUp)
+	turnXY(-90)
+		Y(y/2-xyMargin/2)
+	{
+		
+		circle(d=x+xyMargin,$fn=21);
+		yCube=y-x/2+xyMargin/2;
+		Y(yCube/2)square([x+xyMargin,yCube],center=true);
+	}
+	$screwDist=h-1.4;	
+	X(3) children();
+}	
+
+module pressNutM3(marginUp=margin(0),marginDown=margin(0),washerOnly=false)
+{
+  opaq(grey)
+  g(align(XCENTER,YCENTER)
+    ,Z(margin(0,-marginUp-marginDown)))
+  stack()
+    tubeFast(dOuter=margin(13),h =margin(.9,marginUp+marginDown))
+    if(!washerOnly)Z(-0.01)tubeFast(dOuter=margin(4),h = margin(5,marginUp)-.9
+                    + marginUp);
+}
+
 module pressNutM4(marginUp=margin(0),marginDown=margin(0))
 {
   opaq(grey)
@@ -38,6 +77,22 @@ module nutM3(h=margin(3.8),d=margin(6.2),align=TOUP())
   g(align)tubeFast(d=d,h=h,$fn=6);
 
 module screwM3(h=10.1,nut=true
+              ,capMargin=3.8)
+clear(grey)
+{
+    g(align(TOUP,XCENTER,YCENTER),solid())
+    {
+      tubeFast(dOuter = margin(3),h = h-2.1+.02);
+      Z(h-2.1)
+        tubeFast(d = margin(5.5),h = 2.1+.02);
+      Z(h-.02)
+        tubeFast(d=margin(5.5)
+                ,wall=2
+                ,h = .01+removeExtra(capMargin));
+    }
+  children();
+}
+module inbusScrewM3(h=10.1,nut=true
               ,capMargin=3.8)
 clear(grey)
 {

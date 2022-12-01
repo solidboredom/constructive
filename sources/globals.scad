@@ -13,6 +13,11 @@
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
+
+$padding=.8;
+$margin=.8;
+
+
 blue="blue"; brown="brown"; red="red"; green="green";
 yellow="yellow"; cyan="cyan"; grey="grey";
 orange="orange"; khaki="khaki"; beige="beige";

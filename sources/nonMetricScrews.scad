@@ -18,8 +18,8 @@ module screw3mm(hCap=5,side=1,h=12.3)
           ,Z(-hCap))
           chamfer(1,-1)
             tube(d=(5.7),h=hCap+.1,$fn=12)
-          g(Z(hCap+.1-.05),chamfer(.1,.3))
+          g(Z(hCap+.1-.05),chamfer(.1,-.3))
       {
         tube(d=margin(3.1,.2),h=4,$fn=12);
-        tube(d=margin(2,.2),h=h,$fn=12);
+        tubeFast(d=margin(2,.2),h=h,$fn=12);
       }

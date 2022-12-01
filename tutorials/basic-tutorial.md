@@ -6,7 +6,7 @@ it explains Constructive Syntax for main Building blocks, like tube(), box() or 
 
 --- 
 see also:
-[Part II tutorial](./tutorial-partII.md) shows some basic object modifications like reflectX(), cScale(), or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
+[Part II tutorial](./tutorial-partII.md) shows somee basic object modification like reflectX(), cScale() ,or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
 
 [Part III tutorial](./tutorial-partIII.md) shows more advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly 
 
@@ -19,7 +19,7 @@ The easiest way to try out the Library is to download the [kickstart.zip](https:
 > NOTE: To run all code examples from this tutorial you will need only Openscad and
 > a single file: constructive-compiled.scad put in the same Fodler as your own .scad files.
 > the easiest way to start is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
-> and then extract both files contained in it into same folder. Then you can open the tryExamples.scad from this folder with OpenScad, and then use this file to try the code Examples from the Tutorial, or anything else you like. Just Pressing F5 in Openscad to see the Results.
+> and then extract both files contained in it into same folder. Then you can open the tryExamples.scad from this folder with OpenScad, and then use this file to try the code Examples from the Tutorial, or anything else you like. Just Pessing F5 in Openscad to see the Results.
 
 ---
 
@@ -80,7 +80,7 @@ include <constructive-compiled.scad>
 box(10,y=25,h=15);
 ```
 
-like above, a box with all sides of 10, but a height of h=15 and a depth of y=25.
+like above,  a box with all sides of 10, but a height of h=15 and a depth of y=25.
 same as cube([10,25,15],center=true) in vanilla Openscad syntax.
 
 ![screen](./tutorial-images/box3.png)
@@ -98,7 +98,7 @@ same as cube([35,15,15],center=true) in vanilla Openscad syntax.
 ![screen](./tutorial-images/box4.png)
 ---
 
-> NOTE: all the examples here will work in openscads preview (F5-Key), but later you might need to render them correctly, when (pressing the F6-key) or exporting them as .stl, you will need
+> NOTE: all the examples here willl work in openscads preview (F5-Key), but later you might need to render them correctly, when (pressing the F6-key) or exporting them as .stl, you will need
 > to add one more simple line to your code to acheive that. This line is called "a main() block". It is given and described at the very end of this tutorial
 
 ---
@@ -145,7 +145,7 @@ include <constructive-compiled.scad>
 tube(d=10,h=20,solid=true);
 ```
 
-creates a solid rod of d=10 in diameter and height of h=20, the solid=true argument is one of the ways to make the rod solid, skipping the inner hole, which would turn it into a proper tube;
+creates a solid rod of d=10 in diameter and height of h=20, the solid=true argument is oneof the ways to make the rod solid,skipping the inner hole, which would turn it into a proper tube;
 in vanilla Openscad syntax this would be cylinder(d=10,h=20);
 ![screen](./tutorial-images/tube3.png)  
 
@@ -154,7 +154,7 @@ in vanilla Openscad syntax this would be cylinder(d=10,h=20);
 ---
 #### moving:
 
-the first box with the side of (4 mm) is moved by 5mm to the right
+the first box  with the side of (4 mm) is moved by 5mm to the right
 the second box with a 8mm side is moved by 13mm to the bottom since the negative Z(-13)
 
 ```.scad
@@ -170,7 +170,7 @@ Z(-13) box(8);
 
 #### Applying several Movements to one Object:
 
-here we have several boxes scattered around. The first and the biggest box of 15 mm sides is moved by 8mm to the right by X(8) then by 20mm to the front and by 30 mm up
+here we have several boxes scattered around. The first and the biggest box  of 15 mm sides is moved by 8mm to the right by X(8) then by 20mm to the front and by 30 mm up
 
 ```.scad
 include <constructive-compiled.scad>
@@ -220,7 +220,7 @@ turnXZ(-30) X(5) Y(10) turnXY(45) Z(15) box(10);
 
 ![screen](./tutorial-images/turn3.png)
 
-this will move the box up by 10 mm, turn it by 45 degrees in the horizontal(XY) plane, and the move it 10 in y axis and 5 to the right and then turn the whole thig around XZ axis by -30 degrees
+this will move the box up by 10 mm, turn it by 45 degrees in the horizontal(XY) plane, and the move it 10 in y axis and 5 to the right and then turn thewhole thig around XZ axis by -30 degrees
 
 > NOTE: the sequence in which you apply turns and moves does matter.
 >
@@ -243,7 +243,7 @@ this will move the box up by 10 mm, turn it by 45 degrees in the horizontal(XY) 
 ### Advanced body Positioning: aligning a body relative to its coordinates:
 
 instead of moving the body around by using X() Y() or Z() it is very often handier to just specify that it needs to be aligned so that,
-its specific corner or side touches a corner or side of another body, and let the Constructive do the moving. (This is called "creating a constaint" in a traditional CAD)
+its specific corner or side touches acorner or side of another body, and let the Constructive do the moving. (This is called "creating a constaint" in a traditional CAD)
 here is an example:
 
 ```.scad
@@ -253,8 +253,8 @@ TOUP()box(10);
 TODOWN()tube(d=10,h=10,solid=true);
 ```
 
-the alignment moves the body around, so that not its center, but one of it's corners, or a center of a choosen side of the body is placed in the coordinates, where it is drawn.
- here the box() is aligned UP, for the complete body to be drawn the top side of the coordinates center, just touching it with its bottom sides center,
+the alignment moves the body around,so that not its center, but one of it's corners, or a center of a choosen side of the body is place in the coordinates, where it is drawn.
+ here the box() is aligned UP, for the complete body to be drown the top side of the coordinates center,just touching it with its bottom sides center,
   and the tube is aligned Down to be to the Bottom of coordinates center, just touching it with its top sides center
 
 ![screen](./tutorial-images/align1.png)
@@ -288,7 +288,7 @@ TODOWN() tube(d=20,h=20,wall=3);
 the TORIGHT() TOREAR() TOUP()  alignment is the default alignment for cube in vanilla Openscad, so that its cube([5,5,5]); will acheive the same as
 TORIGHT() TOREAR() TOUP() box(5); in constructives dialect,.
 why use the longer vesion?
-Bacause it is possible to assign alignment over one axis to a block of several bodies and then specify alignment on another axis to a specific body, like here:
+Bacause it is possiible to assign alignement over one axis to a block of several bodies,and then specify alignment on another axis to a specific body, like here:
 
 ```.scad
 include <constructive-compiled.scad>
@@ -304,7 +304,7 @@ TODOWN()TOFRONT()tube(d=20,h=10,wall=2);
 ![screen](./tutorial-images/align4.png)
 ---
 
-NOTE that it is possible and in some cases needed to combinde several following align statements like TOUP() TORIGHT() into a shorter single align(...) command:
+NOTE that  it is possible and in some cases needed to combinde several following align statements like TOUP() TORIGHT() into a  shorter single align(...) command:
 align(TORIGHT, TOREAR, TOUP) box(5); does the same  as the TORIGHT() TOREAR() TOUP() box(5); from above.
 in fact, TOUP() is only as hort for align(TOUP) and TORIGHT() for align (TORIGHT), etc
 
@@ -312,11 +312,11 @@ in fact, TOUP() is only as hort for align(TOUP) and TORIGHT() for align (TORIGHT
 
 #### Stacking Bodies on top or to side
 
-When you have similar bodies stacked on top each other, or to a side, then in vanilla openscad you would have to move each body to the exact position it needs to be, not so with Constructive.
+When youhabe similar bodies stacked on top each other, or to a side, than in vanilla openscad you would have to move each body to the exact postion it needs to be, not so with Constructive.
 you just stack Bodies like that, just set the direction of Stacking:
 
-> IMPORTANT: please pay attention there are NO SEMICOLONS between stacked parts.
-> his looks very unusual, but this is essential for stack() to work. if stack is not working properly, usually there is a semicolon between stacked bodies somewhere:
+> IMPORTANT: pleae pay attention there are NO SEMICOLONS between stacked parts.
+> his looksvery unusual, but this is essential for stack() to work. if stack is not working properly, usually there is a semicolon between stacked bodies somewhere:
 
 ```.scad
 include <constructive-compiled.scad>
@@ -331,7 +331,7 @@ TOUP() stack(TOUP)
 
 ![screen](./tutorial-images/stack1.png)
 
-> note please do not forget the TOUP()alignment if you are using the stack(TOUP) this will align each individual body you are stacking in the same direction with the Stacking, only then the Bodies are Stacked properly on top of each other.
+> note please donot forget the TOUP()alignment if youare using the stack(TOUP) this will align each individual body you ae stacking in the same direction with the Stacking, only the then the Bodies are Stacked properly on top of each other.
 
 ---
 ----
@@ -356,7 +356,7 @@ To chamfer the hole inside a tube eith the current version of Constructive, it n
 
 #### advanced building block: Chamfer() : box()
 
-You can easily chamfer the sides of a box(), just use chamfer(down,up,side) to set by how mamy millimeters the bottom, top, or side edges of the cube need to be cut. Use negatve numbers to indicate we want to remove material (and not to add a skirt)
+You can easily chamfer the sides of a box() , just use chamfer(down,up,side) to set by how mamy millimeters the bottom,top, or side edges of the cube need to be cut, use negatve numbers to indicace we want to remove material (and not to add a skirt)
 
 ```.scad
 include <constructive-compiled.scad>
@@ -368,7 +368,7 @@ chamfer(-1,-2,-3)box(10,x=35,h=15);
 
 ---
 
-if you want smoother rounded vertical edges set fnCorner parameter to a higher value than its default fnCorner=7
+if you want smoother rounded vertical edges set fnCorner parameter to a higher value thanits default fnCorner=7
 
 ```.scad
 include <constructive-compiled.scad>
@@ -407,7 +407,9 @@ or anything in between with value you choose
 
 ---
 
-You can also create a skirt  at the top or bottom using chamfer() but with a positive parameter for coording side
+   skirt
+ you can alsocreate a skirt  at the top or bottom using chamfer() but with a positive parameter
+ for coording side
 
 ```.scad
 include <constructive-compiled.scad>
@@ -428,7 +430,7 @@ bentStripXZ(places=[ X(20),turnXZ(60),X(20),turnXZ(-45),X(10) ],
              y=5, thick=10);
 ```
 
-this will create a 3D strip by moving a cylindcal base element of height y=5 accouring to command-list in its first argument places=[ ... ]
+this will create a 3D strip by moving a cylindcal base element of height y=5 accouring to command-list  in its first argument places=[ ... ]
 
 ![screen](./partII-images/bentStripXZ.png)  
 
@@ -439,7 +441,7 @@ this will create a 3D strip by moving a cylindcal base element of height y=5 acc
 
 #### Advanced stacking Example
 
-here is a very similar Example, but we stack horizonally, and also apply chamfer() to remove 2 mm form the top and bottom sides edges, just to make them look better:
+here is a very similar Example, but we stack horizonally, and also apply chamfer() to remove 2 mm form the top andbottom sides edges, just to make them look better:
 
 ```.scad
 include <constructive-compiled.scad>
@@ -454,7 +456,7 @@ chamfer(-2,-2)TORIGHT()stack(TORIGHT)
 
 ![screen](./tutorial-images/stack2.png)
 
-> note please do not forget the TOUP()alignment if you are using the stack(TOUP) this will align each individual body you ae stacking in the same direction with the Stacking, only then the Bodies are Stacked properly on top of each other.
+> note please donot forget the TOUP()alignment if youare using the stack(TOUP) this will align each individual body you ae stacking in the same direction with the Stacking, only the then the Bodies are Stacked properly on top of each other.
 
 ---------------------
 
@@ -524,7 +526,7 @@ the result looks just the same like this and renders well with (F6-Key) as well 
 
 see also:
 
-[Part II tutorial](./tutorial-partII.md) shows some basic object modifications like reflectX(), cScale(), or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
+[Part II tutorial](./tutorial-partII.md) shows somee basic object modification like reflectX(), cScale() ,or colors and then goes on to explain, how to work with sets of similar objects without for(), with: pieces(), span(), vals(), selectPieces(), etc..
 
 [Part III tutorial](./tutorial-partIII.md) shows more advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly 
 

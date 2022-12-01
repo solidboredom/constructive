@@ -196,6 +196,11 @@ function collect(val1,val2,val3,val4,val5
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
+
+$padding=.8;
+$margin=.8;
+
+
 blue="blue"; brown="brown"; red="red"; green="green";
 yellow="yellow"; cyan="cyan"; grey="grey";
 orange="orange"; khaki="khaki"; beige="beige";
@@ -739,13 +744,15 @@ function calcCenterLineStackTube(lx,ly,lz,stackingTranslation,centerLineStack=$c
 
 function gAll(listOfSteps=[UNITY])= multAll(listOfSteps);
 
-function stepBack(until,i=$placementStackTop)=  $placementStack[i][1]
+function windBack(until,i=$placementStackTop)=  $placementStack[i][1]
   * ((i==1 || $placementStack[i][0]==until|| $placementStack[i-1][0]==until)
-   ?  UNITY : stepBack(until,i-1));
+   ?  UNITY : windBack(until,i-1));
 
 function backwards(steps1=[UNITY],steps2=[UNITY],steps3=[UNITY],steps4=[UNITY])
          = [matrix_invert(multAll(concat(steps1,steps2,steps3,steps4)))];
 
+function	stepBack(transformation=UNITY)=
+						matrix_invert(transformation);
 function geomsOnly(p,geom=undef) =
         let(geomList=[for(e=p)if(isOfGeomType(e))e])
           (!geom&&len(geomList)>0)?setFromList(geomList):set(geom);
@@ -961,9 +968,9 @@ echo("Assembling: ",splitBodies(expandParents(bodyListCommaSeparated)));
  }
 }
 
-module addHullStep(addOnly=true)
+module addHullStep(onlyFor=currentPart(),addOnly=true)
 {
-  if(!(addOnly && $removing)) hull()
+  if(!(addOnly && $removing) && partIs(onlyFor)) hull()
     {
        $hulling=true;
       children();
@@ -1149,8 +1156,8 @@ if(  currentPartIn(fromPart,currentPartRemove()))
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
-function margin(dim=0,margin=.8)= dim +removeExtra(margin);
-function pad(dim=0,padding=.8) = dim -padding + removeExtra(padding);
+function margin(dim=0,margin=$margin)= dim +removeExtra(margin);
+function pad(dim=0,padding=$padding) = dim -padding + removeExtra(padding);
 
 
 
@@ -1245,9 +1252,9 @@ function span(range=180,allButLast = false,totalPieces=$totalPieces)
 function spanAllButLast(range=360, totalPieces = $totalPieces)
   = span(range=range,allButLast = true,totalPieces = totalPieces);
 
-function vRepeat(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10) =
+function vRepeat(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10,shift=0) =
 		let (pattern=collect(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10))
-			[for(i=[0:1:$totalPieces-1])
+			[for(i=[shift:1:$totalPieces-1+shift])
 				pattern[i%len(pattern)]][$valPtr];
 function vSpread(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10) =
 		 let(pattern=collect(val1,val2,val3,val4,val5,val6,val7,val8,val9,val10))
@@ -1387,6 +1394,44 @@ module bentStripXZ(places=[X(10)],y=$y,thick=3)
         circle(d=thick);
     }
 }
+
+
+module bentStripXZCamel(places=[X(10)],heights=["ERROR:need an array of heigths"],thick=3)
+{
+  allPlaces=concat([turnYZ()],placesOnly(places));
+
+  g(turnYZ(-90))
+    for(limit=[0:1:(len(allPlaces)-2)])
+    {
+      base =multAll([for(i=[0:1:limit])allPlaces[i]]);
+    hull()
+      two()
+        multmatrix(
+          vals(base,base*allPlaces[limit+1])
+                    * turnYZ(-90)*reflectZ())
+        linear_extrude(height=heights[limit+$valPtr])
+            circle(d=thick);
+    }
+}
+
+
+
+module bentStrip3D(places=[X(10)],y=$y,thick=3)
+{
+  allPlaces=placesOnly(places);
+
+  g(Z(-y/2))
+    for(limit=[0:1:(len(allPlaces)-2)])
+    {
+      base =multAll([for(i=[0:1:limit])allPlaces[i]]);
+      hull()
+      two()
+        multmatrix(
+          vals(base,base*allPlaces[limit+1]))
+      linear_extrude(y)  circle(d=thick);
+    }
+}
+
 //makes a 2D strip of abaselement and a list of transormations
 //Example:
 //bentStrip([X(30),turnXY(20),Y(40),X(80)])circle(5);
@@ -2011,6 +2056,45 @@ else  children();
 //every time you make a change to a part of the library
 
 
+module cableClampSm(hMargin=margin(0),marginUp=0,xyMargin=margin(0,1),x=4,y=5.4,h=10.6) 
+	cableClamp(hMargin,marginUp,xyMargin,x,y,h)children();
+
+module cableClamp6m(hMargin=margin(0),marginUp=0,xyMargin=margin(0,1),x=4.3,y=5.9,h=10.4) 
+	cableClamp(hMargin,marginUp,xyMargin,x,y,h)children();
+	
+module clampScrews(hMargin=margin(0),screws=2)
+	pieces(screws)g(Z(-sides($screwDist/2-3/2)),turnXZ(-90),TOUP())
+	{
+			tubeFast(d=margin(2.2),h=5,solid=true,$fn=15);
+		Z(5-.01)tubeFast(d=margin(4),h=3+hMargin,solid=true,$fn=15);
+	}
+module cableClamp(hMargin=margin(0),marginUp=0,xyMargin=margin(0),x=4.3,y=5.7,h=10.3)
+
+{
+	Z((-h-hMargin)/2)linear_extrude(hMargin+h+marginUp)
+	turnXY(-90)
+		Y(y/2-xyMargin/2)
+	{
+		
+		circle(d=x+xyMargin,$fn=21);
+		yCube=y-x/2+xyMargin/2;
+		Y(yCube/2)square([x+xyMargin,yCube],center=true);
+	}
+	$screwDist=h-1.4;	
+	X(3) children();
+}	
+
+module pressNutM3(marginUp=margin(0),marginDown=margin(0),washerOnly=false)
+{
+  opaq(grey)
+  g(align(XCENTER,YCENTER)
+    ,Z(margin(0,-marginUp-marginDown)))
+  stack()
+    tubeFast(dOuter=margin(13),h =margin(.9,marginUp+marginDown))
+    if(!washerOnly)Z(-0.01)tubeFast(dOuter=margin(4),h = margin(5,marginUp)-.9
+                    + marginUp);
+}
+
 module pressNutM4(marginUp=margin(0),marginDown=margin(0))
 {
   opaq(grey)
@@ -2035,6 +2119,22 @@ module nutM3(h=margin(3.8),d=margin(6.2),align=TOUP())
   g(align)tubeFast(d=d,h=h,$fn=6);
 
 module screwM3(h=10.1,nut=true
+              ,capMargin=3.8)
+clear(grey)
+{
+    g(align(TOUP,XCENTER,YCENTER),solid())
+    {
+      tubeFast(dOuter = margin(3),h = h-2.1+.02);
+      Z(h-2.1)
+        tubeFast(d = margin(5.5),h = 2.1+.02);
+      Z(h-.02)
+        tubeFast(d=margin(5.5)
+                ,wall=2
+                ,h = .01+removeExtra(capMargin));
+    }
+  children();
+}
+module inbusScrewM3(h=10.1,nut=true
               ,capMargin=3.8)
 clear(grey)
 {
@@ -2091,8 +2191,8 @@ module screw3mm(hCap=5,side=1,h=12.3)
           ,Z(-hCap))
           chamfer(1,-1)
             tube(d=(5.7),h=hCap+.1,$fn=12)
-          g(Z(hCap+.1-.05),chamfer(.1,.3))
+          g(Z(hCap+.1-.05),chamfer(.1,-.3))
       {
         tube(d=margin(3.1,.2),h=4,$fn=12);
-        tube(d=margin(2,.2),h=h,$fn=12);
+        tubeFast(d=margin(2,.2),h=h,$fn=12);
       }
