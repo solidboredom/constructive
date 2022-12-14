@@ -13,7 +13,7 @@
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
-function toInt(str) =
+function toInt(str) = 
       str=="-"?undef
       :str[0]=="-"? -1*toInt([for(i=[1:1:len(str)-1])str[i]])
     :let(d = [for (s = str) ord(s) - 48], l = len(d))
@@ -782,12 +782,13 @@ $placementStackTop=$placementStackTop+1;
   }
 }
 
-module applyTo(partName,step1=UNITY,step2=UNITY,step3=UNITY,step4=UNITY,step5=UNITY
-        ,step6=UNITY,step7=UNITY,step8=UNITY,step9=UNITY
+module applyTo(partName,step2=UNITY,step3=UNITY,step4=UNITY,step5=UNITY
+        ,step6=UNITY,step7=UNITY,step8=UNITY,step9=UNITY,step10=UNITY
         ,step11=UNITY,step12=UNITY,step13=UNITY,step14=UNITY,step15=UNITY
         ,step16=UNITY,step17=UNITY,step18=UNITY,step19=UNITY,step20=UNITY
         ,name="",geom)
-  g(applyTo(partName),step1,step2,step3,step4,step5,step6
+        //step1 is already occupied by the  "applyTo" parameter, so we start with the step2
+  g(applyTo(partName),step2,step3,step4,step5,step6
                 ,step7,step8,step9,step10
         ,step11,step12,step13,step14,step15
         ,step16,step17,step18,step19,step20
@@ -808,7 +809,7 @@ module applyTo(partName,step1=UNITY,step2=UNITY,step3=UNITY,step4=UNITY,step5=UN
 //include <constructive-all.scad> instead. so you do not have to recreate constructive-compiled.scad from the parts
 //every time you make a change to a part of the library
 
-ALL="ALL";
+ALL="ALL"; 
 
 function isAddingFirst()= ($summingUp
 							&& !$removing   );
@@ -1160,7 +1161,7 @@ function margin(dim=0,margin=$margin)= dim +removeExtra(margin);
 function pad(dim=0,padding=$padding) = dim -padding + removeExtra(padding);
 
 
-
+ 
 //shorthand predicates to set color or transparecy
 //allows for syntactic sugar to set opaq or transparent object colors
 //like: clear(green) box(side=15);

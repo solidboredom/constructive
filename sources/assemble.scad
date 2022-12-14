@@ -271,7 +271,7 @@ module invertFor(body)
 
 module add(to,step1=UNITY,step2=UNITY,step3=UNITY,step4=UNITY,step5=UNITY
         ,step6=UNITY,step7=UNITY,step8=UNITY,step9=UNITY,step10=UNITY
-        ,step10=UNITY,step12=UNITY,step13=UNITY,step14=UNITY,step15=UNITY
+        ,step11=UNITY,step12=UNITY,step13=UNITY,step14=UNITY,step15=UNITY
         ,step16=UNITY,step17=UNITY,step18=UNITY,step19=UNITY,step20=UNITY
         ,name="",geom,remove)
 {
@@ -310,7 +310,7 @@ if(currentPartIn(remove,currentPartRemove()))
 
 module remove(from,step1=UNITY,step2=UNITY,step3=UNITY,step4=UNITY,step5=UNITY
         ,step6=UNITY,step7=UNITY,step8=UNITY,step9=UNITY,step10=UNITY
-        ,step10=UNITY,step12=UNITY,step13=UNITY,step14=UNITY,step15=UNITY
+        ,step11=UNITY,step12=UNITY,step13=UNITY,step14=UNITY,step15=UNITY
         ,step16=UNITY,step17=UNITY,step18=UNITY,step19=UNITY,step20=UNITY
         ,name="",geom,add)
 {
