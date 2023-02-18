@@ -18,45 +18,6 @@ function pad(dim=0,padding=$padding) = dim -padding + removeExtra(padding);
 
 
  
-//shorthand predicates to set color or transparecy
-//allows for syntactic sugar to set opaq or transparent object colors
-//like: clear(green) box(side=15);
-//allows for syntactic sugar to set opaq or transparent object colors
-//like: clear(green) box(side=15);
-
-
-module autoColor(color=$autoColor)
-{
-  color(color[1],color[2])children();
-}
-
-module clearFast(col)
-{
-	color(col,0.4)children();
-}
-
-module clear(col)
-{
-	color($removing?undef:col,$removing?undef:0.4)children();
-}
-module clearBody(col)
-{
-	color($removing?undef:col,$removing?undef:0.4)children();
-}
-
-module opaqFast(col)
-{
-	color(col,1)children();
-}
-module opaq(col)
-{
-	color($removing?undef:col,$removing?undef:1)children();
-}
-
-module opaqBody(col)
-{
-	color($removing?undef:col,$removing?undef:1)children();
-}
 
 module runFor(conditionList=[true])
 {

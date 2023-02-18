@@ -7,6 +7,7 @@ cat \
  sources/typeSystem.scad \
  sources/geomInfo.scad \
  sources/placements.scad \
+ sources/colorSystem.scad \
  sources/assemble.scad \
  sources/constructive.scad \
  sources/metricScrews.scad \

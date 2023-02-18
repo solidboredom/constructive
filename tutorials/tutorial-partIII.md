@@ -22,6 +22,11 @@ there is also another Example at:
 
 https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad
 
+a Gallery where new shiny constructive examples are published  to see what can be acheived
+	 		their code is not commented nor cleaned up, but they still can be used for reference
+https://github.com/solidboredom/constructive/blob/main/gallery/	
+
+
 -------------------
 
 The easiest way to try out the Library is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
@@ -232,7 +237,34 @@ assemble("rod,plate")
 results in:
 ![screen](./partII-images/removing_var.png)
 
-####Topics to cover
+
+
+#### autocolor()
+18.02.23 : 
+strongly simplified autocoloring system, just call assemble with two Arguments:
+	like assemble("Part1,part2,part3","screws,part5,part6")autoColor((){ .....}
+	the Parts in the firt Argument are considered to outer objects like Object shells 
+	and are drawn in a transprent color. the "screws" and part 5 and part6  given in the Second argument 
+	are considered drawings inside Detils and are drawn in Opque colors, so you can see them through the
+	"shell" bodies. Every part is automatically given a distinct color from fixed builtin Palette
+
+#### confinementOf()
+	  a new simplified "confinement" mechanism to construct a confining Object for your Part
+	  you may use it with intersection()
+	  allows to use confinementOf() which assembles a confinement from Parts which are marked 
+	  with the confines() marker function to mark which operations constitute a confinement detail,
+	  like in add(confines("part1"))box():
+		or in in remove(confines("part2"))tube(d=2,h=10);
+		then you can use
+		intersection()
+		{
+		confinement()moduleWithParts();
+		assemble()moduleWithParts();
+		}
+		to confine the PArts inside the confinement
+	
+---
+#### Topics still to cover
 ----
 
 *simple constrains(touching/distance)
@@ -248,10 +280,6 @@ bodyIs(body)?(what+($removing? extra:0)):0;
 
 *adjustFor
 -----
-
-*autoColor()
-looks up color of a part in the global color table
-and assigns it to a block
 
 -----
 

@@ -1,0 +1,29 @@
+18.02.23 : 
+	###autocolor()
+strongly simplified autocoloring system, just call assemble with two Arguments:
+	like assemble("Part1,part2,part3","screws,part5,part6")autoColor((){ .....}
+	the Parts in the firt Argument are considered to outer objects like Object shells 
+	and are drawn in a transprent color. the "screws" and part 5 and part6  given in the Second argument 
+	are considered drawings inside Detils and are drawn in Opque colors, so you can see them through the
+	"shell" bodies. Every part is automatically given a distinct color from fixed builtin Palette
+	
+	 ###confinementOf()
+	  a new simplified "confinement" mechanism to construct a confining Object for your Part
+	  you may use it with intersection()
+	  allows to use confinementOf() which assembles a confinement from Parts which are marked 
+	  with the confines() marker function to mark which operations constitute a confinement detail,
+	  like in add(confines("part1"))box():
+		or in in remove(confines("part2"))tube(d=2,h=10);
+		then you can use
+		intersection()
+		{
+		confinement()moduleWithParts();
+		assemble()moduleWithParts();
+		}
+		to confine the PArts inside the confinement
+	 ###Gallery
+	 		created a Gallery where new shiny constructive examples to see what can be acheived
+	 		can be published in the Gallery,
+	 		their code is not commented and not cleaned up, but still can be used for reference
+	 	 			
+

@@ -43,6 +43,7 @@ module cableClamp(hMargin=margin(0),marginUp=0,xyMargin=margin(0),x=4.3,y=5.7,h=
 }	
 
 module pressNutM3(marginUp=margin(0),marginDown=margin(0),washerOnly=false)
+g(TOUP(),solid())
 {
   opaq(grey)
   g(align(XCENTER,YCENTER)
@@ -51,6 +52,10 @@ module pressNutM3(marginUp=margin(0),marginDown=margin(0),washerOnly=false)
     tubeFast(dOuter=margin(13),h =margin(.9,marginUp+marginDown))
     if(!washerOnly)Z(-0.01)tubeFast(dOuter=margin(4),h = margin(5,marginUp)-.9
                     + marginUp);
+  	pieces(4)
+					let($margin=.75)g(turnXY(spanAllButLast()),Y(-5.5),Z(0.05)
+					,chamfer(0,-1.5),cscale(.7,1,1))
+						tube(d=margin(2,.5),h=margin(4.5,.5));                  
 }
 
 module pressNutM4(marginUp=margin(0),marginDown=margin(0))
