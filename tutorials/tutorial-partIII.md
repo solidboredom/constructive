@@ -22,10 +22,16 @@ there is also another Example at:
 
 https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad
 
-a Gallery where new shiny constructive examples are published  to see what can be acheived
-	 		their code is not commented nor cleaned up, but they still can be used for reference
+>Note: Here A Gallery where some shiny constructive examples will be added, 
+to show what can be acheived
+
 https://github.com/solidboredom/constructive/blob/main/gallery/	
 
+>Note: see here the source code ofthe Gallery pieces here:
+https://github.com/solidboredom/constructive/blob/main/gallery/sources/
+
+how little code is actually needed for this,
+the code is in part not commented nor cleaned up, but it still can be used for reference
 
 -------------------
 
