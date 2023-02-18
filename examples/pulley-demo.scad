@@ -9,9 +9,9 @@ $fn=12+12;
 fastRender=true;
 
 
-
-function $partColors()= [
-              ["screws",grey,0.4]
+//the autocolor()function used below is passed this custom olor table
+partColors= [
+               ["screws",grey,0.4]
               ,["bearing",grey,.6]
               ,["wheel",orange,.3]
               ,["tube",red,.4]
@@ -46,8 +46,7 @@ assemble("hub,walls")
   remove(ALL,align(TOFRONT,TOLEFT),turnXY(45+20))  box(70);
 }
 
-module pulley(capOrNut=-1)
-autoColor()
+module pulley(capOrNut=-1) autoColor(custom=partColors)
 {
   pieces(bodyIs("wheel",2,$removing?1:2))
     g(applyTo("wheel")

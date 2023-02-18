@@ -36,9 +36,8 @@ assemble(partNameTextSelector($t))
 // assemble("screws,base,mountEnds(count=1)") mount();
 
 
-//the autocolor() function used below, by default calls $partsColors()
-// to find out which color to use for which part
-function $partColors()= [
+//the autocolor()function used below is passed this custom olor table
+partColors= [
                           ["base",khaki,0.5]
                           ,["mountEnds",pink,.6]
                           ,["screws",black,.5]
@@ -47,7 +46,7 @@ function $partColors()= [
 //here in this module we construct everything
 module mount()
     //uses the colors above
-  autoColor()
+  autoColor(custom=partColors)
     //appyTo("somename") speifies default name of the part
     //which following add(), remove(), confine() or addRemove() will affect,
     //unless specifically specified by their first argument, like in add("mountEnds")

@@ -14,24 +14,19 @@
 //every time you make a change to a part of the library
 
 
+
 $padding=.8;
 $margin=.8;
-
-
-blue="blue"; brown="brown"; red="red"; green="green";
-yellow="yellow"; cyan="cyan"; grey="grey";
-orange="orange"; khaki="khaki"; beige="beige";
-pink="pink"; black="black"; purple="purple";
-silver="silver";
 
 
 $sideX=undef;
 $sideY=undef;
 $sideZ=undef;
 
-$autoColor=[undef,1];
+
 $derivedParts=[];
-function $partColors()=[];
+
+$autoColor=[undef,1];
 
 UNITY=        [ [1, 0, 0, 0],
       					[0, 1, 0, 0],
@@ -99,4 +94,4 @@ TOFRONT=-1* TOBEHIND;
 
 
 /***internal global variables end************************/
-//need to aad more colors here
+

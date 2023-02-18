@@ -15,6 +15,24 @@
 
 ALL="ALL"; 
 
+//allows to use confinementOf() which assembles a confinement from Parts which are marked whith confines() marker 
+//function to mark which operations constitute aconfinement,
+//like in add(confines("part1"))box():
+//or in in remove(confines("part2"))tube(d=2,h=10);
+//then you can use
+//intersection()
+//	{
+//		confinement()moduleWithParts();
+//		assemble()moduleWithParts();
+//	}
+//to confine the PArts inside the confinement
+function confinementPartName() = "confinement";
+function isConfining(truePart=0,falsePart=0) = partIs(confinementPartName())?truePart:falsePart;
+function confines(otherparts=currentPart()) = str(otherparts,",",confinementPartName() );
+module confinementOf() assemble(confinementPartName())children();
+
+//---------
+
 function isAddingFirst()= ($summingUp
 							&& !$removing   );
 function expandParentsStripArgs(child,derivedParts=$derivedParts)=
@@ -131,35 +149,35 @@ function partIsExact(bodySet, ifTrue=true, ifFalse=false) = currentPartExactIn(b
 						? ifTrue : ifFalse;
 
 
-module confine(what= currentPart(),maxSize=1000)
-{
-  remove(what)
-    render()
-      difference()
-      {
-        cube(maxSize,center=true);
-        children();
-      }
-}
 
-module assemble(bodys0=currentPart()
-  ,bodys1="",bodys2="",bodys3="",bodys4="",bodys5="",bodys6="",bodys7="",bodys8="",bodys9=""
-  ,bodys10="",bodys11="",bodys12="",bodys13="",bodys14="",bodys15="",bodys16="",bodys17="",bodys18="",bodys19=""
-  ,bodys20="",bodys21="",bodys22="",bodys23="",bodys24="",bodys25="",bodys26="",bodys27="",bodys28="",bodys29=""
-   , $summingUp=true,$removing=false,$beforeRemoving=true,partColors=$partColors(),$derivedParts=[])
+module assemble(
+	shells=currentPart(),details="",bodys2="",bodys3="",bodys4="",bodys5="",bodys6="",bodys7="",bodys8="",bodys9=""
+  , $summingUp=true,$removing=false,$beforeRemoving=true,$derivedParts=[])
 {
-  bodyListCommaSeparated=str(bodys0,",",bodys1,",",bodys2,",",bodys3,",",bodys4,",",bodys5,",",bodys6,",",bodys7,",",bodys8,",",bodys9,","
-  ,bodys10,",",bodys11,",",bodys12,",",bodys13,",",bodys14,",",bodys15,",",bodys16,",",bodys17,",",bodys18,",",bodys19,","
-  ,bodys20,",",bodys21,",",bodys22,",",bodys23,",",bodys24,",",bodys25,",",bodys26,",",bodys27,",",bodys28,",",bodys29);
+  
+  bodyListCommaSeparated=str(
+  										,",",bodys9
+  										,",",bodys8
+  										,",",bodys7
+  										,",",bodys6
 
-echo("Assembling: ",splitBodies(expandParents(bodyListCommaSeparated)));
+  										,",",bodys5
+  										,",",bodys4  
+
+  										,",",bodys3
+  										,",",bodys2
+  										,",",details
+  										,",",shells
+  );
+
+	echo("Assembling: ",splitBodies(expandParents(bodyListCommaSeparated)));
+ 	$shellPartsForAutoColor=shells;
+ 	$detailPartsForAutoColor=details;
  for(currentPartWithArgs =splitBodies(expandParents(bodyListCommaSeparated)))
  {
     $currentBody= stripPartArgs(currentPartWithArgs);
     $currentPartArgs=stripPartName(currentPartWithArgs);
- 	 colors=mapByStringKey($currentBody, partColors);
-	 $autoColor= len(colors)>0?colors[0]:[undef,undef,undef];
-
+	
 	 difference()
 	{
 		children();
@@ -178,7 +196,7 @@ module addHullStep(onlyFor=currentPart(),addOnly=true)
   if(!(addOnly && $removing) && partIs(onlyFor)) hull()
     {
        $hulling=true;
-      children();
+       children();
     }
   children();
 }

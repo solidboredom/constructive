@@ -17,6 +17,7 @@ include <sources/globals.scad>
 include <sources/typeSystem.scad>
 include <sources/geomInfo.scad>
 include <sources/placements.scad>
+include <sources/colorSystem.scad>
 include <sources/assemble.scad>
 include <sources/constructive.scad>
 include <sources/metricScrews.scad>

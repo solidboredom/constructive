@@ -197,24 +197,19 @@ function collect(val1,val2,val3,val4,val5
 //every time you make a change to a part of the library
 
 
+
 $padding=.8;
 $margin=.8;
-
-
-blue="blue"; brown="brown"; red="red"; green="green";
-yellow="yellow"; cyan="cyan"; grey="grey";
-orange="orange"; khaki="khaki"; beige="beige";
-pink="pink"; black="black"; purple="purple";
-silver="silver";
 
 
 $sideX=undef;
 $sideY=undef;
 $sideZ=undef;
 
-$autoColor=[undef,1];
+
 $derivedParts=[];
-function $partColors()=[];
+
+$autoColor=[undef,1];
 
 UNITY=        [ [1, 0, 0, 0],
       					[0, 1, 0, 0],
@@ -282,7 +277,7 @@ TOFRONT=-1* TOBEHIND;
 
 
 /***internal global variables end************************/
-//need to aad more colors here
+
 // TYPEINFO.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
@@ -794,6 +789,112 @@ module applyTo(partName,step2=UNITY,step3=UNITY,step4=UNITY,step5=UNITY
         ,step16,step17,step18,step19,step20
         ,name=name,geom=geom)
           children();
+
+//shorthand predicates to set color or transparecy
+//allows for syntactic sugar to set opaq or transparent object colors
+//like: clear(green) box(side=15);
+//allows for syntactic sugar to set opaq or transparent object colors
+//like: clear(green) box(side=15);
+
+
+
+
+module autoColor(shells=	$shellPartsForAutoColor
+ 										,details=$detailPartsForAutoColor,colorFor=$currentBody,custom=[])
+{
+  color =pickColorWithOpacity(shells,details,colorFor);
+  mapped =is_undef(colorFor)?[]:mapByStringKey(colorFor,custom);
+  custom= (len(mapped)>0)?mapped[0]:[];
+  isCustom = len(custom)>0;
+  drawColor=isCustom?custom[1]:color[0];
+  remColor=$removing?0.3:(isCustom? custom[2]:color[1]);
+  
+  *echo("autoColor() Debug Data:",custom,shells,details,drawColor,remColor,colorFor);
+
+  color(drawColor,remColor)children();
+}
+module clear (col)
+{
+	color($removing?undef:col,$removing?undef:0.4)children();
+}
+module opaq (col)
+{
+	color($removing?undef:col,$removing?undef:1)children();
+}
+
+//global color constants
+//define Global Constnts (actuall variable) for each color aviliable here
+yellow="yellow"; grey="grey"; gray="grey"; 
+purple="purple"; olive="olive"; orange="orange"; 
+cyan="cyan"; blue="blue"; fuchsia="fuchsia";
+
+pink="pink"; silver="silver"; khaki="khaki"; beige="beige";
+navy="navy"; brown="brown"; red="red"; 	black="black";
+
+aqua="aqua"; gold="gold"; maroon="maroon";
+green="green"; lime="lime"; teal="teal"; 
+
+
+$colorNames=[ 
+			yellow,	gray
+			,pink	,	navy
+			,silver,	brown
+			,khaki,	red
+			,beige,	black
+			,aqua	,	green
+			,gold	,	lime
+			,orange,	fuchsia
+			,purple,	cyan
+			,maroon,	teal
+			,olive,	blue
+			];
+
+
+
+//new style color system 
+function findInList(list=[],elem=$currentBody) =
+		let(found=[for(i=[0:len(list)-1])
+						if(list[i]==elem)i])found;
+						
+function pickColorWithOpacity(shells=	$shellPartsForAutoColor
+ 										,details=$detailPartsForAutoColor
+ 							,part=$currentBody) =
+		let(foundShell=findInList(split(is_undef(shells)?"":shells,","),part)
+			 ,foundDetail=findInList(split(is_undef(details)?"":details,","),part)
+			 ,ind=	(len(foundShell)>0)
+							?[foundShell[0]*2,.4]
+							:(len(foundDetail)>0
+									?([foundDetail[0]*2+1,1])
+											:[0,.4])
+			)[$colorNames[ind[0]],ind[1]];
+			
+
+
+//picks onec olor for shells (even index)	
+function shellColor(ind)=$colorNames[ind*2];
+//picks one color for details inside shell (oddindex)	
+function detailColor(ind)=$colorNames[ind*2+1];
+
+
+// for compatibility: old style coloring system- cumbersome to use
+
+// old style System end
+
+
+
+/*
+//example of Module to show all colors in their typical combinations
+module showColors()
+	pieces(len($colorNames)/2)///2)
+		g(X(every(30)),TOFRONT())
+	{	
+	opaq(detailColor($valPtr))
+		box(5);	
+	clear(shellColor($valPtr))
+		box(20);
+}
+*/
+			
 //ASSEMBLE.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
@@ -810,6 +911,24 @@ module applyTo(partName,step2=UNITY,step3=UNITY,step4=UNITY,step5=UNITY
 //every time you make a change to a part of the library
 
 ALL="ALL"; 
+
+//allows to use confinementOf() which assembles a confinement from Parts which are marked whith confines() marker 
+//function to mark which operations constitute aconfinement,
+//like in add(confines("part1"))box():
+//or in in remove(confines("part2"))tube(d=2,h=10);
+//then you can use
+//intersection()
+//	{
+//		confinement()moduleWithParts();
+//		assemble()moduleWithParts();
+//	}
+//to confine the PArts inside the confinement
+function confinementPartName() = "confinement";
+function isConfining(truePart=0,falsePart=0) = partIs(confinementPartName())?truePart:falsePart;
+function confines(otherparts=currentPart()) = str(otherparts,",",confinementPartName() );
+module confinementOf() assemble(confinementPartName())children();
+
+//---------
 
 function isAddingFirst()= ($summingUp
 							&& !$removing   );
@@ -927,35 +1046,35 @@ function partIsExact(bodySet, ifTrue=true, ifFalse=false) = currentPartExactIn(b
 						? ifTrue : ifFalse;
 
 
-module confine(what= currentPart(),maxSize=1000)
-{
-  remove(what)
-    render()
-      difference()
-      {
-        cube(maxSize,center=true);
-        children();
-      }
-}
 
-module assemble(bodys0=currentPart()
-  ,bodys1="",bodys2="",bodys3="",bodys4="",bodys5="",bodys6="",bodys7="",bodys8="",bodys9=""
-  ,bodys10="",bodys11="",bodys12="",bodys13="",bodys14="",bodys15="",bodys16="",bodys17="",bodys18="",bodys19=""
-  ,bodys20="",bodys21="",bodys22="",bodys23="",bodys24="",bodys25="",bodys26="",bodys27="",bodys28="",bodys29=""
-   , $summingUp=true,$removing=false,$beforeRemoving=true,partColors=$partColors(),$derivedParts=[])
+module assemble(
+	shells=currentPart(),details="",bodys2="",bodys3="",bodys4="",bodys5="",bodys6="",bodys7="",bodys8="",bodys9=""
+  , $summingUp=true,$removing=false,$beforeRemoving=true,$derivedParts=[])
 {
-  bodyListCommaSeparated=str(bodys0,",",bodys1,",",bodys2,",",bodys3,",",bodys4,",",bodys5,",",bodys6,",",bodys7,",",bodys8,",",bodys9,","
-  ,bodys10,",",bodys11,",",bodys12,",",bodys13,",",bodys14,",",bodys15,",",bodys16,",",bodys17,",",bodys18,",",bodys19,","
-  ,bodys20,",",bodys21,",",bodys22,",",bodys23,",",bodys24,",",bodys25,",",bodys26,",",bodys27,",",bodys28,",",bodys29);
+  
+  bodyListCommaSeparated=str(
+  										,",",bodys9
+  										,",",bodys8
+  										,",",bodys7
+  										,",",bodys6
 
-echo("Assembling: ",splitBodies(expandParents(bodyListCommaSeparated)));
+  										,",",bodys5
+  										,",",bodys4  
+
+  										,",",bodys3
+  										,",",bodys2
+  										,",",details
+  										,",",shells
+  );
+
+	echo("Assembling: ",splitBodies(expandParents(bodyListCommaSeparated)));
+ 	$shellPartsForAutoColor=shells;
+ 	$detailPartsForAutoColor=details;
  for(currentPartWithArgs =splitBodies(expandParents(bodyListCommaSeparated)))
  {
     $currentBody= stripPartArgs(currentPartWithArgs);
     $currentPartArgs=stripPartName(currentPartWithArgs);
- 	 colors=mapByStringKey($currentBody, partColors);
-	 $autoColor= len(colors)>0?colors[0]:[undef,undef,undef];
-
+	
 	 difference()
 	{
 		children();
@@ -974,7 +1093,7 @@ module addHullStep(onlyFor=currentPart(),addOnly=true)
   if(!(addOnly && $removing) && partIs(onlyFor)) hull()
     {
        $hulling=true;
-      children();
+       children();
     }
   children();
 }
@@ -1162,45 +1281,6 @@ function pad(dim=0,padding=$padding) = dim -padding + removeExtra(padding);
 
 
  
-//shorthand predicates to set color or transparecy
-//allows for syntactic sugar to set opaq or transparent object colors
-//like: clear(green) box(side=15);
-//allows for syntactic sugar to set opaq or transparent object colors
-//like: clear(green) box(side=15);
-
-
-module autoColor(color=$autoColor)
-{
-  color(color[1],color[2])children();
-}
-
-module clearFast(col)
-{
-	color(col,0.4)children();
-}
-
-module clear(col)
-{
-	color($removing?undef:col,$removing?undef:0.4)children();
-}
-module clearBody(col)
-{
-	color($removing?undef:col,$removing?undef:0.4)children();
-}
-
-module opaqFast(col)
-{
-	color(col,1)children();
-}
-module opaq(col)
-{
-	color($removing?undef:col,$removing?undef:1)children();
-}
-
-module opaqBody(col)
-{
-	color($removing?undef:col,$removing?undef:1)children();
-}
 
 module runFor(conditionList=[true])
 {
@@ -2086,6 +2166,7 @@ module cableClamp(hMargin=margin(0),marginUp=0,xyMargin=margin(0),x=4.3,y=5.7,h=
 }	
 
 module pressNutM3(marginUp=margin(0),marginDown=margin(0),washerOnly=false)
+g(TOUP(),solid())
 {
   opaq(grey)
   g(align(XCENTER,YCENTER)
@@ -2094,6 +2175,10 @@ module pressNutM3(marginUp=margin(0),marginDown=margin(0),washerOnly=false)
     tubeFast(dOuter=margin(13),h =margin(.9,marginUp+marginDown))
     if(!washerOnly)Z(-0.01)tubeFast(dOuter=margin(4),h = margin(5,marginUp)-.9
                     + marginUp);
+  	pieces(4)
+					let($margin=.75)g(turnXY(spanAllButLast()),Y(-5.5),Z(0.05)
+					,chamfer(0,-1.5),cscale(.7,1,1))
+						tube(d=margin(2,.5),h=margin(4.5,.5));                  
 }
 
 module pressNutM4(marginUp=margin(0),marginDown=margin(0))
