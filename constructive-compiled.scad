@@ -1882,7 +1882,7 @@ module tube(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall,d1=unde
   }
 
 //--------------------------------------------------
-module tubeSoftHole(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall
+module tubeShell(h=heightInfo(),d=$d,dInner=$dInner,dOuter=$dOuter,wall=$wall
                 ,solid=solidInfo(),arc=0
                 ,innerChamfer=false)
 {

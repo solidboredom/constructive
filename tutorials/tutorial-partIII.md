@@ -63,7 +63,7 @@ two()
 
 #### height(h) and solid(true/false)
 
-specify the default value for Constructive primitive tube() and box(). (solid() only affects tube(), tubFast(), and  tubeSoftHole() not the box()) ) So inside of the g() block above, the h and solid arguments can be ommited when using box() or tube()  
+specify the default value for Constructive primitive tube() and box(). (solid() only affects tube(), tubFast(), and  tubeShell() not the box()) ) So inside of the g() block above, the h and solid arguments can be ommited when using box() or tube()  
 
 ------------------------------------------------
 
