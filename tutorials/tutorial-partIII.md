@@ -2,8 +2,13 @@
 
 ### PART III
 
-NOTE: THIS IS STILL A BCONSTRUCTION SITE.
-LARGELY UNFINISHED WORK IN PROGRESS.
+NOTE: THIS PART OF THE TUTORIAL IS STILL UNDER CONSTRUCTION.
+THE FUNCTIONALITY IS IN THE LIBRARY IS READY AND BEEING USED BUT THE TUTRIAL NOT.
+the Source code in 
+https://github.com/solidboredom/constructive/blob/main/examples/mount-demo.scad
+and 
+https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad
+might give some idea, of what is not here
 
 [Part III tutorial](./tutorial-partIII.md) shows advanced Features like grouping commands into a g() group, working with Parts, and combinig them into Assembly
 --------------------
