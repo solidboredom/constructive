@@ -27,13 +27,13 @@ there is also another Example at:
 
 https://github.com/solidboredom/constructive/blob/main/examples/pulley-demo.scad
 
->Note: Here A Gallery where some shiny constructive examples will be added, 
-to show what can be acheived
+> Note: Here A Gallery where some shiny constructive examples will be added, 
+> to show what can be acheived
 
-https://github.com/solidboredom/constructive/blob/main/gallery/	
+https://github.com/solidboredom/constructive/blob/main/gallery/    
 
->Note: see here the source code ofthe Gallery pieces here:
-https://github.com/solidboredom/constructive/blob/main/gallery/sources/
+> Note: see here the source code ofthe Gallery pieces here:
+> https://github.com/solidboredom/constructive/blob/main/gallery/sources/
 
 how little code is actually needed for this,
 the code is in part not commented nor cleaned up, but it still can be used for reference
@@ -134,22 +134,72 @@ the same applies to remove(),applyTo() and confineTo() described later
 
 --------
 
-#### confineTo()
+---
 
-> NOTE: Due to Openscads own issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off uing the old goo intersection() instead, untill it is fixed
+### Easily create skins with skin(size=0,skinThick=$skinThick , walls=2,    margin=$margin)
 
-## splitting your model into building blocks called "Parts"
+like here:
 
-it is essential at cirtain complexity to split the model into parts,so you can later remove one part from another
-the Parts areorthogonal to the usage of modules:
-asingle part can be cnstructed by several modules, and several modules can add or remove to/from the same partintheir code.
+```.scad
+include <constructive-compiled.scad>
 
-the parts which you want to display need to be span_8_rotated_boxesin the assemble("part1,greatpart,screw,orAlikePart") argument;
-if you decide to hide a Part just remove its name from the assemble(".....") string argment
-So here an example:
-TODO:.....
+$skinThick=1.5; //thickness of the Skin in mm
 
---------
+assemble()    
+{
+    //hull()    
+    addRemove(height(skin(20)))
+    {        
+
+        g(X(-10),chamfer(-4,-4-1))
+             tube( d = skin(30),solid=true);
+
+            g(X(4),chamfer(-1,-1,-5))
+                box(skin(37), skin(18), h=skin(4));                
+    }    
+    remove(TOLEFT(TOFRONT))    box(30);        
+}
+```
+
+results in:
+![screen](./partII-images/skin.png)
+
+note: if you use the TOUP() to TODOWN(), TOLEFT(), etc to align your Part also need
+ to add alignSkin(TOUP),alignSkin(TODOWN) /* or which ever alignment you are using*/
+ , to keep Skins Walls each sides equally thick, like here
+
+---- 
+
+```.scad
+assemble()    
+{
+    //hull()                                                             
+    addRemove(height(skin(20)), TOUP(),alignSkin(TOUP))
+    {        
+
+        g(X(-10),chamfer(-4,-4-1))
+             tube( d = skin(30),solid=true);
+
+            g(X(4),chamfer(-1,-1,-5))
+                box(skin(30), skin(18), h=skin(10));                
+    }    
+    remove(TOLEFT(TOFRONT))    box(30,h=100);        
+}
+```
+
+results in
+![screen](./partII-images/skin-toup.png)
+
+---
+
+--- there are also
+
+function skinIf(condition,size=0, skinThick=skinThick , walls=2, margin=margin) 
+function skinParts(partList,size=0, skinThick=skinThick , walls=2 , margin=margin)
+
+to condtionally create skins
+
+----
 
 #### applyTo()
 
@@ -248,34 +298,56 @@ assemble("rod,plate")
 results in:
 ![screen](./partII-images/removing_var.png)
 
-
-
 #### autocolor()
+
 18.02.23 : 
 strongly simplified autocoloring system, just call assemble with two Arguments:
-	like assemble("Part1,part2,part3","screws,part5,part6")autoColor((){ .....}
-	the Parts in the firt Argument are considered to outer objects like Object shells 
-	and are drawn in a transprent color. the "screws" and part 5 and part6  given in the Second argument 
-	are considered drawings inside Detils and are drawn in Opque colors, so you can see them through the
-	"shell" bodies. Every part is automatically given a distinct color from fixed builtin Palette
+    like assemble("Part1,part2,part3","screws,part5,part6")autoColor((){ .....}
+    the Parts in the firt Argument are considered to outer objects like Object shells 
+    and are drawn in a transprent color. the "screws" and part 5 and part6  given in the Second argument 
+    are considered drawings inside Detils and are drawn in Opque colors, so you can see them through the
+    "shell" bodies. Every part is automatically given a distinct color from fixed builtin Palette
 
 #### confinementOf()
-	  a new simplified "confinement" mechanism to construct a confining Object for your Part
-	  you may use it with intersection()
-	  allows to use confinementOf() which assembles a confinement from Parts which are marked 
-	  with the confines() marker function to mark which operations constitute a confinement detail,
-	  like in add(confines("part1"))box():
-		or in in remove(confines("part2"))tube(d=2,h=10);
-		then you can use
-		intersection()
-		{
-		confinement()moduleWithParts();
-		assemble()moduleWithParts();
-		}
-		to confine the PArts inside the confinement
-	
----
+
+      a new simplified "confinement" mechanism to construct a confining Object for your Part
+      you may use it with intersection()
+      allows to use confinementOf() which assembles a confinement from Parts which are marked 
+      with the confines() marker function to mark which operations constitute a confinement detail,
+      like in add(confines("part1"))box():
+        or in in remove(confines("part2"))tube(d=2,h=10);
+        then you can use
+        intersection()
+        {
+        confinement()moduleWithParts();
+        assemble()moduleWithParts();
+        }
+        to confine the Parts inside the confinement
+
+----
+
+
+
+#### confineTo()
+
+> NOTE: Due to Openscads own issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off uing the old goo intersection() instead, untill it is fixed
+
+## splitting your model into building blocks called "Parts"
+
+it is essential at cirtain complexity to split the model into parts,so you can later remove one part from another
+the Parts areorthogonal to the usage of modules:
+asingle part can be cnstructed by several modules, and several modules can add or remove to/from the same partintheir code.
+
+the parts which you want to display need to be span_8_rotated_boxesin the assemble("part1,greatpart,screw,orAlikePart") argument;
+if you decide to hide a Part just remove its name from the assemble(".....") string argment
+So here an example:
+TODO:.....
+
+--------
+
+
 #### Topics still to cover
+
 ----
 
 *simple constrains(touching/distance)

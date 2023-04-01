@@ -136,6 +136,21 @@ function chamferInfoUpdate(invert=false,prevInfo=chamferInfo())
 function chamferOff()=chamfer(disable=true);
 function chamferOn()=chamfer(disable=false);
 
+
+//skin functions to create Skins for Objects
+
+$skinThick=1.5; //default wall Thickness for Skins is set to 1.5 mm
+function skin(size=0,skinThick=$skinThick , walls=2,    margin=$margin) = margin(size,margin=$margin)+ skinThick*walls-($removing? (skinThick*walls):0);
+function skinIf(condition,size=0, skinThick=$skinThick , walls=2, margin=$margin) = (!condition? margin(size,margin=$margin) : skin(size,skinThick,walls));
+function skinParts(partList,size=0, skinThick=$skinThick , walls=2 , margin=$margin) = (!partIs(partList)? margin(size,,margin=$margin) : skin(size,skinThick,walls));
+
+function alignSkin(direction = ZCENTER) = let(skinDist=margin(0,$skinThick-$margin/2)) 
+															XYZ(direction==TORIGHT? skinDist : direction==TOLEFT ?-skinDist :0
+															 ,direction==TOREAR? skinDist : direction==TOFRONT ?-skinDist :0
+															 ,direction==TOUP? skinDist : direction==TODOWN ?-skinDist :0);
+
+module alignSkin(direction = ZCENTER) g(alignSkin(direction));
+
 //-----------------------------------------------------------
 //changes alignment of the children objects
 //normally all box() or tube() objects are centered like
