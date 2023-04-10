@@ -75,6 +75,11 @@ function addArgVals(parts,valArray1,valArray2,valArray3,valArray4,valArray5
         ],",");
 
 $currentPartArgs=undef;
+function  argString(paramName,default=undef,currentArgs=$currentPartArgs)=
+let(matched=[for(args = split(currentArgs,","))
+    let(argParts= split(args,"="))
+  if(argParts[0] == paramName) (argParts[1])])
+  len(matched)>0?matched[0]:default;
 function  argInt(paramName,default=undef,currentArgs=$currentPartArgs)=
 let(matched=[for(args = split(currentArgs,","))
     let(argParts= split(args,"="))
@@ -137,8 +142,6 @@ function currentPartExactIn(bodySet) = ( bodySet==ALL
 	  				   && enclosesOneOf($currentBody,bodySet) )) ? (true) : (false);
 
 function currentBodyIn(bodySet) = currentPartIn(bodySet);
-
-
 function ifBodyIs(bodySet, ifTrue, ifFalse=0) = currentPartIn(bodySet)
 						? ifTrue : ifFalse;
 function bodyIs(bodySet, ifTrue=true, ifFalse=false) = currentPartIn(bodySet)
@@ -155,8 +158,7 @@ module assemble(
   , $summingUp=true,$removing=false,$beforeRemoving=true,$derivedParts=[])
 {
   
-  bodyListCommaSeparated=str(
-  										,",",bodys9
+  bodyListCommaSeparated=str(	",",bodys9
   										,",",bodys8
   										,",",bodys7
   										,",",bodys6
