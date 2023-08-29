@@ -129,7 +129,7 @@ pieces(7) X(every(20)) box(10,h=10+every(5));
 #### sides(distance)
 
 Sides is useful to create two symmetrically placed or mirrored bodies.
-Because "there are always two sides" sides() need to always be preceded by pieces(2) or by_two()_ which is a short for _pieces(2)_
+Because "there are always two sides" sides() need to always be preceded by pieces(2) or by _two()_ which is a short for _pieces(2)_
 
 `sides()` will always return -1 for the fist piece and 1 for the second piece.
 If you use it with an argument like: sides(arg) it will return `-arg` for the first piece and `arg` for the second:
@@ -167,7 +167,7 @@ So it produces the same result as above
 
 #### span(range) and pieces(n)
 
-Sometimes you do not want to figure what would be the distance between neighbours you need to pass to every(distance) to say span 650 mm by 8 pieces, then it is handles to use span(range) than every(distance).
+Sometimes you do not want to figure what would be the distance between neighbours you need to pass to every(distance) to say span 650 mm by 8 pieces, then it is handier to use span(range) than every(distance).
 
 span(_range_) preceded by pieces(n) can (among other uses) be used to fill a range with a repetitive body.
 

@@ -76,7 +76,7 @@ Specify the default value for Constructive primitive tube() and box(). (solid() 
 
 #### assemble()
 
-Allows application of universal operations like adding and removing solids (i.e. bring holes or adding screws), only to a Part of the Model representing a specific mechanical (sub-Part).
+Allows application of universal operations like adding and removing solids (i.e. boring holes or adding screws), only to a Part of the Model representing a specific mechanical (sub-Part).
 
 To start with, surrounding your code by an `assemble()` block without any parameters simply allows you to use add() and remove() instead of Openscads native difference().
 One of the advantages over difference() is that you can put positive parts(to be subtracted from) and negative parts(to be subtracted) in any order at any place of the block in any number, even inside movements and rotations.
@@ -324,7 +324,7 @@ strongly simplified autocoloring system, just call assemble with two Arguments:
 
 #### confineTo()
 
-> NOTE: Due to Openscads own issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off uing the old goo intersection() instead, until it is fixed
+> NOTE: Due to Openscads own issues in current versions of Openscad. confineTo can sometimes produce unpredictable results, so you might be better off using the old good intersection() instead, until it is fixed
 
 ## splitting your model into building blocks called "Parts"
 
