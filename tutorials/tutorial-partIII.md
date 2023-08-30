@@ -43,7 +43,7 @@ the code is in part not commented nor cleaned up, but it still can be used for r
 The easiest way to try out the Library is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
 
 > NOTE: To run all code examples from this tutorial you will need only Openscad and
-> a single file: constructive-compiled.scad put it into OpenScad Library folder (File -> Show Library Folder...) OR at the same Folder as your own .scad files.
+> a single file: `constructive-compiled.scad` put it in the same Folder as your own .scad files. (or into the OpenScad Library folder)
 > the easiest way to start is to download the [kickstart.zip](https://github.com/solidboredom/constructive/blob/main/kickstart.zip)
 > and then extract both files contained in it into same folder. Then you can open the tryExamples.scad from this folder with OpenScad, and then use this file to try the code Examples from the Tutorial, or anything else you like. Just Pressing F5 in Openscad to see the Results.
 
