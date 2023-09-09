@@ -25,7 +25,7 @@ The easiest way to try out the Library is to download the [kickstart.zip](https:
 
 ## Basic building blocks
 
-here are the basic buildng blocks box(),tube() and ball()
+here are the basic buildng blocks box(),tube(),tubeShell(), and ball(),ballShell()
 they are very similar to OpenScad's native cube(),cylinder() and sphere() but have simpler, less mathematical argument syntax and additionally allow for powerful Constructive features introduced later .
 There are other more advanced blocks and features, such as bentStripXZ() or applying of chamfer(), which have no vanilla Openscad equivalent, the will be explained later
 #### Basic building block : box()
@@ -115,6 +115,22 @@ ball(10);
 ![screen](./tutorial-images/ball.png)
 
 ---
+#### Basic building block: ball(diameter)
+creates a hollow ball shell (a pin pong ball) (the space inside Ball is not a "Hard" cavity, it is not affecting/erasing other bodies inside it.
+but it also correctly reacts on align(), stack() and other Constructive concepts described below. out of the box. so it is preferred to use ball(d) instead of sphere()
+
+```.scad
+
+include <constructive-compiled.scad>
+ballShell(10);
+
+```
+![screen](./tutorial-images/ballShell.png)
+
+---
+
+ballShell(d=heightInfo(),wall=wallInfo())
+
 
 #### Basic building block: tube()
 
@@ -128,7 +144,19 @@ creates a tube with outer Diameter of 10,a wall of 2.5 and height of 20mm
 ![screen](./tutorial-images/tube1.png)  
 
 ---
+#### Basic building block: tubeShell()
 
+```.scad
+// the code for this example needs some additional features like assemble() so it is documented in
+the Part 3 ofthis Tutorial
+```
+
+equivalent to a tube() , 
+but the bore inside Ball is not a "Hard" cavity, it is not affecting/erasing other bodies inside it.
+
+![screen](./partII-images/tubeShell.png)  
+
+---
 ```.scad
 include <constructive-compiled.scad>
 

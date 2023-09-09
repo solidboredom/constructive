@@ -398,6 +398,24 @@ $centerLineStack=calcCenterLineStackBox(lx,ly,lz,stackingTranslation);
 translate(stackingTranslation)
 	children();
 }
+module ballShell(d=heightInfo(),wall=wallInfo())
+{
+  assert(d!=undef,"BALL():d is undefined");
+  lx=d;
+  ly=d;
+  lz=d;
+
+translate(multV(alignInfo(),[lx,ly,lz])/2)
+	difference()
+	{
+		 sphere(d=d);
+	 	sphere(d=d-wall*2);
+	}
+stackingTranslation=calcStackingTranslation(lx,ly,lz);
+$centerLineStack=calcCenterLineStackBox(lx,ly,lz,stackingTranslation);
+translate(stackingTranslation)
+	children();
+}
 
 function _priv_tube_d(d,dInner,dOuter,wall,d1) = ((dInner!=undef)
 		?dInner+wall*2:

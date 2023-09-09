@@ -1663,6 +1663,24 @@ $centerLineStack=calcCenterLineStackBox(lx,ly,lz,stackingTranslation);
 translate(stackingTranslation)
 	children();
 }
+module ballShell(d=heightInfo(),wall=wallInfo())
+{
+  assert(d!=undef,"BALL():d is undefined");
+  lx=d;
+  ly=d;
+  lz=d;
+
+translate(multV(alignInfo(),[lx,ly,lz])/2)
+	difference()
+	{
+		 sphere(d=d);
+	 	sphere(d=d-wall*2);
+	}
+stackingTranslation=calcStackingTranslation(lx,ly,lz);
+$centerLineStack=calcCenterLineStackBox(lx,ly,lz,stackingTranslation);
+translate(stackingTranslation)
+	children();
+}
 
 function _priv_tube_d(d,dInner,dOuter,wall,d1) = ((dInner!=undef)
 		?dInner+wall*2:
@@ -2182,7 +2200,9 @@ module cableClamp(hMargin=margin(0),marginUp=0,xyMargin=margin(0),x=4.3,y=5.7,h=
 	X(3) children();
 }	
 
-module pressNutM3(marginUp=margin(0),marginDown=margin(0),washerOnly=false)
+module pressNutM3(marginUp=margin(0),marginDown=margin(0),
+				dSpike=margin(2,.5),hSpike=margin(4.5,.5),rSpike=5.5,
+				washerOnly=false)
 g(TOUP(),solid())
 {
   opaq(grey)
@@ -2193,9 +2213,9 @@ g(TOUP(),solid())
     if(!washerOnly)Z(-0.01)tubeFast(dOuter=margin(4),h = margin(5,marginUp)-.9
                     + marginUp);
   	pieces(4)
-					let($margin=.75)g(turnXY(spanAllButLast()),Y(-5.5),Z(0.05)
-					,chamfer(0,-1.5),cscale(.7,1,1))
-						tube(d=margin(2,.5),h=margin(4.5,.5));                  
+			g(turnXY(spanAllButLast()),Y(-rSpike),Z(0.05)
+				,chamfer(0,-1.5),cscale(.7,1,1))
+						tube(d=dSpike,h=hSpike);                  
 }
 
 module pressNutM4(marginUp=margin(0),marginDown=margin(0))

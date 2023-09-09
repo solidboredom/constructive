@@ -133,6 +133,32 @@ assemble()
 the same applies to remove(),applyTo() and confineTo() described later
 
 --------
+#### Basic building block: tubeShell()
+just like above, but instead of specifing just d and wall thickness it is possible to specify dInner and dOuter.
+
+![screen](./tutorial-images/tube2.png)  ---
+
+```.scad
+
+include <../devlibs/constructive/constructive-all.scad>
+
+//Assemb
+assemble()
+{
+ add(TOUP())tube(d=20,wall=2,h=100);	
+
+ //we use add() here because addRemove() would add and then remove the same tubeShell()
+ //so it would dissaperafter rendering (with keypress F7)
+ add(Z(20))tubeShell(d=60,wall=3,h=8);
+
+//the tube can be used with addRemove(),it is meant to remove bodies of the Part inside it
+ addRemove(Z(60))tube(d=60,wall=3,h=12); 
+
+ }
+
+```
+equivalent to a tube() , 
+but the bore inside Ball is not a "Hard" cavity, it is not affecting/erasing other bodies inside it.
 
 ---
 
