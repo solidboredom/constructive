@@ -1,7 +1,7 @@
 //ASSEMBLE.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..

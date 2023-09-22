@@ -1,7 +1,7 @@
 //BASICFUNCS.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..
@@ -184,7 +184,7 @@ function collect(val1,val2,val3,val4,val5
 //GLOBALS.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..
@@ -281,7 +281,7 @@ TOFRONT=-1* TOBEHIND;
 // TYPEINFO.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..
@@ -365,7 +365,7 @@ function isOfTypeOrElse(type,obj,elseObj) =
 //GEOMINFO.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..
@@ -564,7 +564,7 @@ function applyTo(partName="main",add=undef,remove=undef)
 //PLACEMENTS.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..
@@ -898,7 +898,7 @@ module showColors()
 //ASSEMBLE.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..
@@ -1266,7 +1266,7 @@ if(  currentPartIn(fromPart,currentPartRemove()))
 //CONSTRUCTIVE.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..
@@ -2156,7 +2156,7 @@ else  children();
 //METRICSCREWS.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..
@@ -2294,7 +2294,7 @@ clear(grey)
 //NONMETRICSCRES.SCAD
 //This is a part of:
 //CONSTRUCTIVE LIBRARY by PPROJ (version from 05.06.2021)
-//released under General Public License version 2.
+//released under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //you only need a single file: constructive-compiled.scad which
 //contains all the partial files you find. you can ignore everything else..

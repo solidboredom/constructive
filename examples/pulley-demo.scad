@@ -1,5 +1,5 @@
 //constructive library by PPROJ (version from 05.06.2021)
-//under General Public License version 2.
+//under dual-licensed under GPL 2.0  or CERN-OHL-W.*You can choose between one of them if you use this work..
 
 //Demo of some possibilities of the
 //"Constructive" Library by PPROJ (version from 05.06.2021)

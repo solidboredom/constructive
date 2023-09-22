@@ -1,3 +1,11 @@
+## License
+
+This work is dual-licensed under GPL 2.0  or CERN-OHL-W .
+
+*You can choose between one of them if you use this work.*
+
+`SPDX-License-Identifier: GPL-2.0  OR CERN-OHL-W`
+
 # Constructive Library: 
 Extends OpenScad Language for complex and complementary mechanical parts with less mathematical code. Offers a "Stamping"  approach to quickly create mechanical parts fitting and complementing one another. This is used as a replacement for Constraints known form other CAD systems
 Easily create holes from modules and overcome many Openscad's limitiations for complex models using the library's own syntax. 
@@ -9,6 +17,7 @@ _constructive-compiled.scad_ in your .scad file, that is all.
 
 ![screeen](./img/mount.gif)
 
+
 Constructive Library (about 1900 lines of Code)
 introduces a different approach to OpenScad Syntax: you *rarely need difference(), for(),intersection()* or their one-to-one equivalents, In the *library's own dialect a for()* block might look like:
 
@@ -17,6 +26,9 @@ pieces(4) X(every(35)) turnXY (vals(10,25,-15,40)) cube(10);
 It is all *valid OpenScad*, you do not need any additional programs, just the OpenScad and the constructive-compiled.scad file.
 
 The Constuctive-Syntax tries to align more with mechanical construction of parts and less with mathematical concepts like arrays, vectors and functions. (but they are heavily used behind the scenes). So it aims to be more concise and fluent for mechanical parts than vanilla OpenScad. It allows you to make holes from Modules and really good deal more.
+
+NOTE: if you use a  development version openscad, please make sure the experimental option "lazy Unions" is tuned off under Settings. This experiment breaks Openscads compatibility and you might encounter problems with this library also.
+
 
 For a **basic introduction** (specially if you are new to Openscad )
 see the [beginners tutorial](./tutorials/basic-tutorial.md) it explains Constructive Syntax for main Building blocks, like tube(), box() or bentStrip() and their placement and alignment in space like stack() , align(),  X(),Y(),Z() or turnXZ() 
