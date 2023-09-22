@@ -2100,8 +2100,6 @@ if(!disable)
 }
 //addOnly()children();
 if(!disable)
-  intersection()
-	{
 		  for(i=[chamferInfo[0],chamferInfo[1]])
 		  {
 			    r=i[1];
@@ -2118,7 +2116,6 @@ if(!disable)
 			                 offset(r=abs(rSide),$fn=fnCorner)
 		 	        square([lx,ly],center=true,$fn=childFn);
 		  }
-  }
 else  children();
 }
 
