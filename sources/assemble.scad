@@ -193,9 +193,11 @@ module assemble(
  }
 }
 
-module addHullStep(onlyFor=currentPart(),addOnly=true)
+module addHullStep(onlyFor=currentPart(),addOnly=true,removeOnly=false)
 {
-  if(!(addOnly && $removing) && partIs(onlyFor)) hull()
+  if(!(addOnly && $removing) && 
+  	  !(removeOnly && !$removing) && 
+  		partIs(onlyFor)) hull()
     {
        $hulling=true;
        children();
