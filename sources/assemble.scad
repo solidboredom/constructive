@@ -195,8 +195,8 @@ module assemble(
 
 module addHullStep(onlyFor=currentPart(),addOnly=true,removeOnly=false)
 {
-  if(!(addOnly && $removing) && 
-  	  !(removeOnly && !$removing) && 
+  if((removeOnly ||!(addOnly && $removing)) && 
+  	  !(removeOnly && $removing) && 
   		partIs(onlyFor)) hull()
     {
        $hulling=true;

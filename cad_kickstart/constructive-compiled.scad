@@ -1092,8 +1092,8 @@ module assemble(
 
 module addHullStep(onlyFor=currentPart(),addOnly=true,removeOnly=false)
 {
-  if(!(addOnly && $removing) && 
-  	  !(removeOnly && !$removing) && 
+  if((removeOnly ||!(addOnly && $removing)) && 
+  	  !(removeOnly && $removing) && 
   		partIs(onlyFor)) hull()
     {
        $hulling=true;
@@ -1402,6 +1402,28 @@ function chamferInfoUpdate(invert=false,prevInfo=chamferInfo())
 			):prevInfo;
 function chamferOff()=chamfer(disable=true);
 function chamferOn()=chamfer(disable=false);
+
+
+function uniChamfer4(bot, top, insideBot, insideTop, side, fnCorner=7, sideDiff=($skinThick*2) ) = 
+			$removing
+			?chamfer(insideBot, insideTop, side?( side-($skinThick*2)):undef,fnCorner = fnCorner)
+			:chamfer(bot,top,
+						side,	fnCorner = fnCorner);
+
+function uniChamfer2(bot, top, side, fnCorner=7 ,sideDiff=($skinThick*2)) = 
+			$removing
+			?chamfer(-bot,-top, side-sideDiff,fnCorner = fnCorner)
+			:chamfer( bot, top, side, fnCorner=fnCorner);
+
+function uniChamfer(botTop,side,fnCorner=7,sideDiff=($skinThick*2)) = 
+			$removing
+			?chamfer(-botTop,-botTop, side-sideDiff,fnCorner = fnCorner)
+			:chamfer( botTop, botTop, side               ,fnCorner = fnCorner);
+
+function equiChamfer(botTop,side,fnCorner=7,sideDiff=($skinThick*2)) = 
+			$removing
+			?chamfer( botTop, botTop, side-sideDiff,fnCorner = fnCorner)
+			:chamfer( botTop, botTop, side         ,fnCorner = fnCorner);
 
 
 //skin functions to create Skins for Objects
