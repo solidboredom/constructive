@@ -1,3 +1,6 @@
+* but please note that this project has moved to https://codeberg.org/solidboredom/constructive, the repository on github is outdated *
+   ---
+
 ## License
 
 This work is dual-licensed under GPL 2.0  or CERN-OHL-W .
