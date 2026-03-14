@@ -146,13 +146,9 @@ Creates a tube with outer Diameter of 10,a wall of 2.5 and height of 20mm
 ---
 #### Basic building block: tubeShell()
 
-```.scad
-// the code for this example needs some additional features like assemble() so it is documented in
-the Part 3 ofthis Tutorial
-```
+> This complex example needs some additional features like `assemble()` which is documented in [Part 3](tutorial-partIII.md#assemble) of this Tutorial.
 
-equivalent to a tube() , 
-but the bore inside Ball is not a "Hard" cavity, it is not affecting/erasing other bodies inside it.
+Equivalent to a `tube()` but the inside is not a "Hard" cavity. It wont affect or erase other bodies inside it.
 
 ![screen](./partII-images/tubeShell.png)  
 
@@ -165,7 +161,9 @@ tube(dOuter=45,dInner=25,h=20);
 
 Just like above, but instead of specifying just d and wall thickness it is possible to specify dInner and dOuter.
 
-![screen](./tutorial-images/tube2.png)  ---
+![screen](./tutorial-images/tube2.png)  
+
+---
 
 ```.scad
 include <constructive-compiled.scad>
